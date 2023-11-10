@@ -44,9 +44,11 @@ public class AgentsService : IAgentsService
             return false;
         }
 
-        // Calls our UserEntity entity and applys each property value collected to its respective property.
+        // Calls our AgentsEntity and applys each property value collected to its respective property.
         AgentsEntity entity = new()
         {
+            FirstName = model.FirstName,
+            LastName = model.LastName,
             Email = model.Email,
             UserName = model.UserName,
             DateCreated = DateTime.Now
@@ -77,10 +79,10 @@ public class AgentsService : IAgentsService
         AgentsDetail detail = new()
         {
             Id = entity.Id,
-            Email = entity.Email!,
-            UserName = entity.UserName!,
             FirstName = entity.FirstName!,
             LastName = entity.LastName,
+            Email = entity.Email!,
+            UserName = entity.UserName!,
             DateCreated = entity.DateCreated
         };
 
