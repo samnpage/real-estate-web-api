@@ -1,11 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace RealEstate.Data.Entities;
-public class BuyersEntity
+namespace RealEstate.Models.Buyers;
+public class CreateBuyers
 {
-    [Key]
-    public int Id { get; set; }
-
     [Required, MinLength(4), MaxLength(100)]
     public string FirstName { get; set; } = string.Empty;
 
@@ -20,6 +17,4 @@ public class BuyersEntity
 
     [MaxLength(100)]
     public int PrefSqFt { get; set; }
-
-    public DateTime DateCreated { get; set; }
 }
