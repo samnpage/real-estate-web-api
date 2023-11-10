@@ -38,10 +38,10 @@ public class AgentsController : ControllerBase
         return BadRequest(new TextResponse("Agent could not be registered."));
     }
 
-    [HttpGet("{userId:int}")]
-    public async Task<IActionResult> GetById([FromRoute] int userId)
+    [HttpGet("{agentId:int}")]
+    public async Task<IActionResult> GetById([FromRoute] int agentId)
     {
-        AgentsDetail? detail = await _agentsService.GetAgentByIdAsync(userId);
+        AgentsDetail? detail = await _agentsService.GetAgentByIdAsync(agentId);
 
         if (detail is null)
         {
