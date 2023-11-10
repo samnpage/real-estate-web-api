@@ -28,6 +28,8 @@ public class AgentsService : IAgentsService
     // {
     //     _context = context;
     // }
+
+    // CREATE METHOD
     public async Task<bool> RegisterAgentsAsync(AgentsRegister model)
     {
         //  checks the returned value from both methods. If either return anything but null, we'll know it's invalid data.
@@ -65,7 +67,7 @@ public class AgentsService : IAgentsService
 
     }
 
-    // Gets user info by id. Returns null if it does not exist.
+    // READ METHOD
     public async Task<AgentsDetail?> GetAgentByIdAsync(int agentId)
     {
         AgentsEntity? entity = await _context.Users.FindAsync(agentId);
@@ -85,7 +87,10 @@ public class AgentsService : IAgentsService
         return detail;
     }
 
-    // Helper Methods
+    // UPDATE METHOD
+    // DELETE METHOD
+
+    // HELPER METHODS
     // Checks whether the user's email is unique
     private async Task<bool> CheckEmailAvailability(string email)
     {
