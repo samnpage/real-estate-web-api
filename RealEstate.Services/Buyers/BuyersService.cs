@@ -1,11 +1,8 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Data.Entities;
 using RealEstate.Models.Buyers;
+using RealEstate.Models.Responses;
 
 namespace RealEstate.Services.Buyers;
 public class BuyersService : IBuyersService
@@ -17,7 +14,7 @@ public class BuyersService : IBuyersService
         _dbContext = dbContext;
     }
 
-    // Method that creates new buyer contact
+    // CREATE Method that creates new buyer contact
     public async Task<ListBuyers?> CreateBuyerContactAsync(CreateBuyers model)
     {
         BuyersEntity entity = new()
@@ -52,15 +49,44 @@ public class BuyersService : IBuyersService
         return response;
     }
 
-    // Method that allows agent to view buyer information by Id
+    // READ Method that allows agent to view buyer information by Id
     public async Task<BuyersEntity?> GetBuyerByIdAsync(int id)
         {
             return await _dbContext.Buyers.FirstOrDefaultAsync(l => l.Id == id);
         }
 
-    // async Task<BuyerDetail> ViewBuyerByIdAsync(int Id)
-    // {
-    //     BuyersEntity entity = await _dbContext.Buyers.FirstOrDefaultAsync(e => e.Id == Id);
-    //     return entity;
-    // }
+    // UPDATE Method. Updates the buyer information by Id.
+    public async Task<BuyersEntity?> UpdateBuyerByIdAsync(int id, BuyersEntity updatedBuyer)
+        {
+            var existingBuyer = await _dbContext.Buyers.FirstOrDefaultAsync(e => e.Id == id);
+
+            if (existingBuyer != null)
+            {   
+                existingBuyer.FirstName = updatedBuyer.FirstName;
+                existingBuyer.LastName = updatedBuyer.LastName;
+                existingBuyer.Email = updatedBuyer.Email;
+                existingBuyer.Phone = updatedBuyer.Phone;
+                existingBuyer.PrefSqFt = updatedBuyer.PrefSqFt;
+
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return existingBuyer;
+        }
+    // DELETE Method
+
+    public async Task<TextResponse> DeleteBuyerByIdAsync(int id)
+        {
+            var buyerToDelete = await _dbContext.Buyers.FirstOrDefaultAsync(e => e.Id == id);
+
+            if (buyerToDelete != null)
+            {
+                _dbContext.Buyers.Remove(buyerToDelete);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            TextResponse response = new ("Buyer deleted successfully.");
+
+            return response;
+        }
 }

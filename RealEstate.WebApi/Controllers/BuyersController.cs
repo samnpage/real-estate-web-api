@@ -40,4 +40,30 @@ public class BuyersController : ControllerBase
                 ? Ok(entity)
                 : NotFound();
     }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateBuyerById([FromRoute] int id, [FromForm] BuyersEntity request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var response = await _buyersService.UpdateBuyerByIdAsync(id, request);
+
+        if (response is not null)
+            return Ok(response);
+
+        return BadRequest(new TextResponse("Could not update buyer"));
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteBuyerById([FromRoute] int id)
+    {
+        TextResponse response = await _buyersService.DeleteBuyerByIdAsync(id);
+
+        return response is not null
+                ? Ok(response)
+                : NotFound();
+    }
 }
