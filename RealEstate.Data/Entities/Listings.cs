@@ -25,7 +25,7 @@ namespace RealEstate.Data.Entities
         
         [MaxLength(300)]
         public string? FeedBack {get; set;}
-        [ForeignKey]
+        [ForeignKey("HomeStyle")]
         public string? HomeStyle{get; set;}
     }
 }
