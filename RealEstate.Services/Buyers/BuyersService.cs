@@ -1,5 +1,8 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Data.Entities;
 using RealEstate.Models.Buyers;
@@ -8,23 +11,14 @@ namespace RealEstate.Services.Buyers;
 public class BuyersService : IBuyersService
 {
     private readonly ApplicationDbContext _dbContext;
-    private readonly int _agentId;
 
-    public BuyersService(UserManager<AgentsEntity> userManager, 
-                        SignInManager<AgentsEntity> signInManager, 
-                        ApplicationDbContext dbContext)
+    public BuyersService(ApplicationDbContext dbContext)
     {
-        var currentAgent = signInManager.Context.User;
-        var agentIdClaim = userManager.GetUserId(currentAgent);
-        var hasValidId = int.TryParse(agentIdClaim, out _agentId);
-
-        if (hasValidId == false)
-            throw new Exception("Attempted to build BuyersService without Id claim.");
         _dbContext = dbContext;
     }
 
-    // Creates new buyer contact
-    public async Task<bool> CreateBuyerContactAsync(CreateBuyers model)
+    // Method that creates new buyer contact
+    public async Task<ListBuyers?> CreateBuyerContactAsync(CreateBuyers model)
     {
         BuyersEntity entity = new()
         {
@@ -32,7 +26,41 @@ public class BuyersService : IBuyersService
             LastName = model.LastName,
             Email = model.Email,
             Phone = model.Phone,
-            PrefSqFt = model.PrefSqFt
+            PrefSqFt = model.PrefSqFt,
+            DateCreated = DateTime.Now
         };
+
+        _dbContext.Add(entity);
+        var numberOfChanges = await _dbContext.SaveChangesAsync();
+
+        if (numberOfChanges != 1)
+        {
+            return null;
+        }
+
+        ListBuyers response = new()
+        {
+            Id = entity.Id,
+            FirstName = entity.FirstName,
+            LastName = entity.LastName,
+            Email = entity.Email,
+            Phone = entity.Phone,
+            PrefSqFt = entity.PrefSqFt,
+            DateCreated = DateTime.Now
+        };
+
+        return response;
     }
+
+    // Method that allows agent to view buyer information by Id
+    public async Task<BuyersEntity?> GetBuyerByIdAsync(int id)
+        {
+            return await _dbContext.Buyers.FirstOrDefaultAsync(l => l.Id == id);
+        }
+
+    // async Task<BuyerDetail> ViewBuyerByIdAsync(int Id)
+    // {
+    //     BuyersEntity entity = await _dbContext.Buyers.FirstOrDefaultAsync(e => e.Id == Id);
+    //     return entity;
+    // }
 }
