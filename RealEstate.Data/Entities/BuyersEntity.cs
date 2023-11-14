@@ -6,19 +6,19 @@ public class BuyersEntity
     [Key]
     public int Id { get; set; }
 
-    [Required, MinLength(4), MaxLength(100)]
+    [Required, MaxLength(100)]
     public string FirstName { get; set; } = string.Empty;
 
-    [Required, MinLength(4), MaxLength(100)]
+    [Required, MaxLength(100)]
     public string LastName { get; set; } = string.Empty;
 
     [Required, EmailAddress]
     public string Email { get; set; } = string.Empty;
 
-    [Phone, MaxLength(14)]
-    public int Phone { get; set; }
+    [Phone, MaxLength(15)]
+    public string Phone { get; set; } = string.Empty;
 
-    [MaxLength(100)]
+    [Range(0, int.MaxValue)]
     public int PrefSqFt { get; set; }
 
     public DateTime DateCreated { get; set; }
