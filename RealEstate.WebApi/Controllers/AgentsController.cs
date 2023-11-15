@@ -8,40 +8,40 @@ namespace ElevenNote.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+public class AgentsController : ControllerBase
 {
     // Fields that access our services
-    private readonly IAgentsService _userService;
+    private readonly IAgentsService _agentsService;
 
     // Constructor
-    public UserController(IAgentsService userService)
+    public AgentsController(IAgentsService agentsService)
     {
-        _userService = userService;
+        _agentsService = agentsService;
     }
 
     [HttpPost("Register")]
     [ProducesResponseType(typeof(IEnumerable<AgentsRegister>), 200)]
-    public async Task<IActionResult> RegisterUser([FromBody] AgentsRegister model)
+    public async Task<IActionResult> RegisterAgent([FromBody] AgentsRegister model)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var registerResult = await _userService.RegisterAgentsAsync(model);
+        var registerResult = await _agentsService.RegisterAgentsAsync(model);
         if (registerResult)
         {
-            TextResponse response = new("User was registered.");
+            TextResponse response = new("Agent was registered.");
             return Ok(response);
         }
 
-        return BadRequest(new TextResponse("User could not be registered."));
+        return BadRequest(new TextResponse("Agent could not be registered."));
     }
 
-    [HttpGet("{userId:int}")]
-    public async Task<IActionResult> GetById([FromRoute] int userId)
+    [HttpGet("{agentId:int}")]
+    public async Task<IActionResult> GetById([FromRoute] int agentId)
     {
-        AgentsDetail? detail = await _userService.GetAgentByIdAsync(userId);
+        AgentsDetail? detail = await _agentsService.GetAgentByIdAsync(agentId);
 
         if (detail is null)
         {

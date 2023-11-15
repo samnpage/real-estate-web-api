@@ -11,6 +11,8 @@ public class ApplicationDbContext : IdentityDbContext<AgentsEntity, IdentityRole
 
 
     public DbSet<BuyersEntity> Buyers { get; set; }
+    
+    public DbSet<Listings> Listings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
