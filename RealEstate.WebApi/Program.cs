@@ -6,12 +6,12 @@ using RealEstate.Data.Entities;
 using RealEstate.Services;
 using RealEstate.Services.Agent;
 using RealEstate.Services.Appointments;
-using RealEstate.Services.Buyers;
+using RealEstate.Services.Buyer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<IBuyersService, BuyersService>();
+builder.Services.AddScoped<IBuyerService, BuyerService>();
 builder.Services.AddScoped<IAgentService, AgentService>();
 builder.Services.AddScoped<IAppointmentsService, AppointmentsService>();
 builder.Services.AddScoped<IListingService, ListingService>();

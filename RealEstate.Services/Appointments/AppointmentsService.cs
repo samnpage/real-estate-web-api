@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using RealEstate.Data;
 using RealEstate.Data.Entities;
 using RealEstate.Models.Appointments;
-using RealEstate.Models.Buyers;
+using RealEstate.Models.Buyer;
 using RealEstate.Services.Appointments;
 
 namespace inRealEstate.Services.Appointments

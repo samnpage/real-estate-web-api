@@ -18,7 +18,7 @@ namespace RealEstate.Data.Entities
         public AgentEntity agent { get; set; }= null!;
 
         [Required ,ForeignKey(nameof(buyer))]
-        public BuyersEntity  buyer{ get; set; }=null!;
+        public BuyerEntity  buyer{ get; set; }=null!;
         public int BuyerId{ get; set; }
 
         [Required, ForeignKey(nameof(listing))]

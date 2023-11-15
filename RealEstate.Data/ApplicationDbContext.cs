@@ -10,7 +10,7 @@ public class ApplicationDbContext : IdentityDbContext<AgentEntity, IdentityRole<
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
 
 
-    public DbSet<BuyersEntity> Buyers { get; set; }
+    public DbSet<BuyerEntity> Buyers { get; set; }
 
     public DbSet<AppointmentsEntity> Appointments{ get; set; }
     
@@ -22,7 +22,7 @@ public class ApplicationDbContext : IdentityDbContext<AgentEntity, IdentityRole<
         base.OnModelCreating(builder);
 
         builder.Entity<AgentEntity>().ToTable("Agent");
-        builder.Entity<BuyersEntity>().ToTable("Buyers");
+        builder.Entity<BuyerEntity>().ToTable("Buyer");
         builder.Entity<ListingEntity>().ToTable("Listings");
     }
 }
