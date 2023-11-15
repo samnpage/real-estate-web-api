@@ -7,32 +7,32 @@ using RealEstate.Data.Entities;
 
 namespace RealEstate.Services
 {
-    public class ListingsService : IListingsService
+    public class ListingService : IListingService
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public ListingsService(ApplicationDbContext dbContext)
+        public ListingService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Listings>> GetAllListingsAsync()
+        public async Task<IEnumerable<ListingEntity>> GetAllListingsAsync()
         {
             return await _dbContext.Listings.ToListAsync();
         }
 
-        public async Task<Listings> GetListingByIdAsync(int id)
+        public async Task<ListingEntity> GetListingByIdAsync(int id)
         {
             return await _dbContext.Listings.FirstOrDefaultAsync(l => l.Id == id);
         }
 
-        public async Task CreateListingAsync(Listings listing)
+        public async Task CreateListingAsync(ListingEntity listing)
         {
             _dbContext.Listings.Add(listing);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateListingAsync(int id, Listings updatedListing)
+        public async Task UpdateListingAsync(int id, ListingEntity updatedListing)
         {
             var existingListing = await _dbContext.Listings.FirstOrDefaultAsync(l => l.Id == id);
 

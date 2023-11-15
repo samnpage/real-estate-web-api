@@ -11,9 +11,11 @@ public class ApplicationDbContext : IdentityDbContext<AgentsEntity, IdentityRole
 
 
     public DbSet<BuyersEntity> Buyers { get; set; }
-    
-    public DbSet<Listings> Listings { get; set; }
+   
     public DbSet<AppointmentsEntity> Appointments{ get; set; }
+    
+    public DbSet<ListingEntity> Listings { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -21,5 +23,6 @@ public class ApplicationDbContext : IdentityDbContext<AgentsEntity, IdentityRole
 
         builder.Entity<AgentsEntity>().ToTable("Agents");
         builder.Entity<BuyersEntity>().ToTable("Buyers");
+        builder.Entity<ListingEntity>().ToTable("Listings");
     }
 }

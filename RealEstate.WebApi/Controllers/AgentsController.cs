@@ -3,6 +3,7 @@ using RealEstate.Models.Responses;
 using RealEstate.Services.Agents;
 using Microsoft.AspNetCore.Mvc;
 using ElevenNote.Models.Agents;
+using RealEstate.Data.Entities;
 
 namespace ElevenNote.WebApi.Controllers;
 
@@ -19,6 +20,7 @@ public class AgentsController : ControllerBase
         _agentsService = agentsService;
     }
 
+    // POST Method
     [HttpPost("Register")]
     [ProducesResponseType(typeof(IEnumerable<AgentsRegister>), 200)]
     public async Task<IActionResult> RegisterAgent([FromBody] AgentsRegister model)
@@ -38,6 +40,16 @@ public class AgentsController : ControllerBase
         return BadRequest(new TextResponse("Agent could not be registered."));
     }
 
+    // GET Methods
+    // GET all
+    [HttpGet]
+    public async Task<IActionResult> GetAllTransactionsAsync()
+    {
+        var result = await _agentsService.GetAllAgentsAsync();
+        return Ok(result);
+    }
+    
+    // GET by Id
     [HttpGet("{agentId:int}")]
     public async Task<IActionResult> GetById([FromRoute] int agentId)
     {
@@ -50,6 +62,35 @@ public class AgentsController : ControllerBase
 
         return Ok(detail);
     }
+
+    // PUT Method
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateBuyerById([FromRoute] int id, [FromBody] UpdateAgent request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var response = await _agentsService.UpdateAgentByIdAsync(id, request);
+
+        if (response is not null)
+            return Ok(response);
+
+        return BadRequest(new TextResponse("Could not update Agent Information"));
+    }
+
+    // DELETE Method
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteBuyerById([FromRoute] int id)
+    {
+        TextResponse response = await _agentsService.DeleteAgentByIdAsync(id);
+
+        return response is not null
+                ? Ok(response)
+                : NotFound();
+    }
+    
 //     [HttpPost("~/api/Token")]
 //     [ProducesResponseType(typeof(IEnumerable<TokenRequest>), 200)]
 //     public async Task<IActionResult> GetToken([FromBody] TokenRequest request)

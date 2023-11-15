@@ -49,6 +49,13 @@ public class BuyersService : IBuyersService
         return response;
     }
 
+    // Read Method that allows agent to view all buyers
+    public async Task<List<BuyersEntity>> GetAllBuyersAsync()
+    {
+        var buyers = await _dbContext.Buyers.ToListAsync();
+        return buyers;
+    }
+
     // READ Method that allows agent to view buyer information by Id
     public async Task<BuyersEntity?> GetBuyerByIdAsync(int id)
         {

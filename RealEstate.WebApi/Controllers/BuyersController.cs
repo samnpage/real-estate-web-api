@@ -16,6 +16,7 @@ public class BuyersController : ControllerBase
         _buyersService = buyersService;
     }
 
+    // POST
     [HttpPost]
     public async Task<IActionResult> CreateBuyer([FromForm] CreateBuyers request)
     {
@@ -31,6 +32,15 @@ public class BuyersController : ControllerBase
         return BadRequest(new TextResponse("Could not create new buyer"));
     }
 
+    // GET ALL
+    [HttpGet]
+    public async Task<IActionResult> GetAllBuyers()
+    {
+        var result = await _buyersService.GetAllBuyersAsync();
+        return Ok(result);
+    }
+
+    // GET BY ID
     [HttpGet("{buyerId:int}")]
     public async Task<IActionResult> GetBuyerById([FromRoute] int buyerId)
     {
@@ -41,6 +51,7 @@ public class BuyersController : ControllerBase
                 : NotFound();
     }
 
+    // UPDATE
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateBuyerById([FromRoute] int id, [FromForm] BuyersEntity request)
     {
@@ -57,6 +68,7 @@ public class BuyersController : ControllerBase
         return BadRequest(new TextResponse("Could not update buyer"));
     }
 
+    // DELETE
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteBuyerById([FromRoute] int id)
     {

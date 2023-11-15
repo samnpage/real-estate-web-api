@@ -1,8 +1,10 @@
 using ElevenNote.Models.Agents;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Data.Entities;
 using RealEstate.Models.Agents;
+using RealEstate.Models.Responses;
 
 namespace RealEstate.Services.Agents;
 public class AgentsService : IAgentsService
@@ -21,8 +23,6 @@ public class AgentsService : IAgentsService
         _userManager = userManager;
         _signInManager = signInManager;
     }
-
-
 
     // public UserService(ApplicationDbContext context)
     // {
@@ -69,7 +69,16 @@ public class AgentsService : IAgentsService
 
     }
 
-    // READ METHOD
+    // READ METHODS
+
+    // READ All
+    public async Task<List<AgentsEntity>> GetAllAgentsAsync()
+    {
+        var agents = await _context.Users.ToListAsync();
+        return agents;
+    }
+
+    // READ by Id
     public async Task<AgentsDetail?> GetAgentByIdAsync(int agentId)
     {
         AgentsEntity? entity = await _context.Users.FindAsync(agentId);
@@ -90,7 +99,38 @@ public class AgentsService : IAgentsService
     }
 
     // UPDATE METHOD
+    public async Task<AgentsEntity?> UpdateAgentByIdAsync(int id, UpdateAgent updatedAgent)
+    {
+        var currentAgent = await _context.Users.FindAsync(id);
+
+        if (currentAgent != null)
+        {
+            currentAgent.FirstName = updatedAgent.FirstName;
+            currentAgent.LastName = updatedAgent.LastName;
+            currentAgent.Email = updatedAgent.Email;
+            currentAgent.UserName = updatedAgent.UserName;
+
+            await _context.SaveChangesAsync();       
+        }
+
+        return currentAgent;
+    }
+    
     // DELETE METHOD
+    public async Task<TextResponse> DeleteAgentByIdAsync(int id)
+        {
+            var agentToDelete = await _context.Users.FirstOrDefaultAsync(e => e.Id == id);
+
+            if (agentToDelete != null)
+            {
+                _context.Users.Remove(agentToDelete);
+                await _context.SaveChangesAsync();
+            }
+
+            TextResponse response = new ("Agent successfully deleted");
+
+            return response;
+        }
 
     // HELPER METHODS
     // Checks whether the user's email is unique

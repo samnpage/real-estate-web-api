@@ -64,13 +64,26 @@ namespace RealEstate.Data.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<int>(type: "int", maxLength: 14, nullable: false),
-                    PrefSqFt = table.Column<int>(type: "int", maxLength: 100, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    PrefSqFt = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Buyers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HomeStyle",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HomeStyle", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,6 +192,33 @@ namespace RealEstate.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Listings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Address1 = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
+                    Address2 = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    State = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    SquareFootage = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    FeedBack = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    HomeStyleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Listings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Listings_HomeStyle_HomeStyleId",
+                        column: x => x.HomeStyleId,
+                        principalTable: "HomeStyle",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "Agents",
@@ -217,6 +257,11 @@ namespace RealEstate.Data.Migrations
                 name: "IX_AspNetUserRoles_RoleId",
                 table: "AspNetUserRoles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Listings_HomeStyleId",
+                table: "Listings",
+                column: "HomeStyleId");
         }
 
         /// <inheritdoc />
@@ -241,10 +286,16 @@ namespace RealEstate.Data.Migrations
                 name: "Buyers");
 
             migrationBuilder.DropTable(
+                name: "Listings");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Agents");
+
+            migrationBuilder.DropTable(
+                name: "HomeStyle");
         }
     }
 }
