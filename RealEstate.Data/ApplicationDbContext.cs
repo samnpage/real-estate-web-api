@@ -12,7 +12,7 @@ public class ApplicationDbContext : IdentityDbContext<AgentEntity, IdentityRole<
 
     public DbSet<BuyerEntity> Buyers { get; set; }
 
-    public DbSet<AppointmentsEntity> Appointments{ get; set; }
+    public DbSet<AppointmentEntity> Appointments{ get; set; }
     
     public DbSet<ListingEntity> Listings { get; set; }
 

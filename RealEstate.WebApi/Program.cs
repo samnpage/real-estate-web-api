@@ -1,11 +1,10 @@
-using inRealEstate.Services.Appointments;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Data.Entities;
 using RealEstate.Services;
 using RealEstate.Services.Agent;
-using RealEstate.Services.Appointments;
+using RealEstate.Services.Appointment;
 using RealEstate.Services.Buyer;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IBuyerService, BuyerService>();
 builder.Services.AddScoped<IAgentService, AgentService>();
-builder.Services.AddScoped<IAppointmentsService, AppointmentsService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IListingService, ListingService>();
 
 builder.Services.AddHttpContextAccessor();
