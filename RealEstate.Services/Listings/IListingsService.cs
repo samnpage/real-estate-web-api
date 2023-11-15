@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using RealEstate.Data.Entities;
 
+
 namespace RealEstate.Services
 {
     public interface IListingsService
