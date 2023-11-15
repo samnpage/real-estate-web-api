@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Data.Entities;
+using RealEstate.Services;
 using RealEstate.Services.Agents;
 using RealEstate.Services.Buyers;
 
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IBuyersService, BuyersService>();
 builder.Services.AddScoped<IAgentsService, AgentsService>();
+builder.Services.AddScoped<IListingService, ListingService>();
 
 builder.Services.AddHttpContextAccessor();
 
