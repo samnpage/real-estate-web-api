@@ -1,12 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Data.Entities;
-using RealEstate.Models.ListingsModels;
-using RealEstate.Models.ListingsModels.cs;
+using RealEstate.Models.Listing;
 using RealEstate.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RealEstate.Controllers
 {

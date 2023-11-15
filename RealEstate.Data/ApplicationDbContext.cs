@@ -23,6 +23,6 @@ public class ApplicationDbContext : IdentityDbContext<AgentEntity, IdentityRole<
 
         builder.Entity<AgentEntity>().ToTable("Agent");
         builder.Entity<BuyerEntity>().ToTable("Buyer");
-        builder.Entity<ListingEntity>().ToTable("Listings");
+        builder.Entity<ListingEntity>().ToTable("Listing");
     }
 }
