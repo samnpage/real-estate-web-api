@@ -15,7 +15,7 @@ namespace RealEstate.Data.Entities
 
         [Required, ForeignKey(nameof(agent))]
         public int AgentId { get; set; }
-        public AgentsEntity agent { get; set; }= null!;
+        public AgentEntity agent { get; set; }= null!;
 
         [Required ,ForeignKey(nameof(buyer))]
         public BuyersEntity  buyer{ get; set; }=null!;
@@ -28,7 +28,5 @@ namespace RealEstate.Data.Entities
 
         [Required]
         public string FeedBack{ get; set; }= string.Empty;
-
- 
         }
     }

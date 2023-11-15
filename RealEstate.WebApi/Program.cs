@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Data.Entities;
 using RealEstate.Services;
-using RealEstate.Services.Agents;
+using RealEstate.Services.Agent;
 using RealEstate.Services.Appointments;
 using RealEstate.Services.Buyers;
 
@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IBuyersService, BuyersService>();
-builder.Services.AddScoped<IAgentsService, AgentsService>();
+builder.Services.AddScoped<IAgentService, AgentService>();
 builder.Services.AddScoped<IAppointmentsService, AppointmentsService>();
 builder.Services.AddScoped<IListingService, ListingService>();
 
@@ -22,7 +22,7 @@ builder.Services.AddHttpContextAccessor();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<AgentsEntity>(options =>
+builder.Services.AddDefaultIdentity<AgentEntity>(options =>
 {
     // Password configuration
     options.Password.RequiredLength = 4;

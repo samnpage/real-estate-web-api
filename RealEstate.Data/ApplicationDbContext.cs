@@ -5,13 +5,13 @@ using RealEstate.Data.Entities;
 
 namespace RealEstate.Data;
 
-public class ApplicationDbContext : IdentityDbContext<AgentsEntity, IdentityRole<int>, int>
+public class ApplicationDbContext : IdentityDbContext<AgentEntity, IdentityRole<int>, int>
 {   
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
 
 
     public DbSet<BuyersEntity> Buyers { get; set; }
-   
+
     public DbSet<AppointmentsEntity> Appointments{ get; set; }
     
     public DbSet<ListingEntity> Listings { get; set; }
@@ -21,7 +21,7 @@ public class ApplicationDbContext : IdentityDbContext<AgentsEntity, IdentityRole
     {
         base.OnModelCreating(builder);
 
-        builder.Entity<AgentsEntity>().ToTable("Agents");
+        builder.Entity<AgentEntity>().ToTable("Agent");
         builder.Entity<BuyersEntity>().ToTable("Buyers");
         builder.Entity<ListingEntity>().ToTable("Listings");
     }
