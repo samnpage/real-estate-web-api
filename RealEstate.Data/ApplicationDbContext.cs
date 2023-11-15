@@ -21,8 +21,8 @@ public class ApplicationDbContext : IdentityDbContext<AgentEntity, IdentityRole<
     {
         base.OnModelCreating(builder);
 
-        builder.Entity<AgentEntity>().ToTable("Agent");
-        builder.Entity<BuyerEntity>().ToTable("Buyer");
-        builder.Entity<ListingEntity>().ToTable("Listing");
+        builder.Entity<AgentEntity>().ToTable("Agents");
+        builder.Entity<BuyerEntity>().ToTable("Buyers");
+        builder.Entity<ListingEntity>().ToTable("Listings");
     }
 }

@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Threading.Tasks;
 
 namespace RealEstate.Data.Entities
 {
@@ -13,17 +8,18 @@ namespace RealEstate.Data.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required, ForeignKey(nameof(agent))]
+        [Required, ForeignKey(nameof(Agent))]
         public int AgentId { get; set; }
-        public AgentEntity agent { get; set; }= null!;
+        public virtual AgentEntity Agent { get; set; } = null!;
 
-        [Required ,ForeignKey(nameof(buyer))]
-        public BuyerEntity  buyer{ get; set; }=null!;
+        [Required, ForeignKey(nameof(Buyer))]
         public int BuyerId{ get; set; }
+        public virtual BuyerEntity Buyer{ get; set; } = null!;
 
-        [Required, ForeignKey(nameof(listing))]
+        [Required, ForeignKey(nameof(Listing))]
         public int ListingId { get; set; }
-        public ListingEntity listing { get; set; }=null!;
+        public virtual ListingEntity Listing { get; set; } = null!;
+
         public DateTime DateScheduled{ get; set; }
 
         [Required]

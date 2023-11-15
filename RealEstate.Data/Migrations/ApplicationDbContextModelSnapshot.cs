@@ -176,7 +176,7 @@ namespace RealEstate.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("RealEstate.Data.Entities.AgentsEntity", b =>
+            modelBuilder.Entity("RealEstate.Data.Entities.AgentEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -257,7 +257,42 @@ namespace RealEstate.Data.Migrations
                     b.ToTable("Agents", (string)null);
                 });
 
-            modelBuilder.Entity("RealEstate.Data.Entities.BuyersEntity", b =>
+            modelBuilder.Entity("RealEstate.Data.Entities.AppointmentEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AgentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BuyerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateScheduled")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FeedBack")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ListingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AgentId");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("ListingId");
+
+                    b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("RealEstate.Data.Entities.BuyerEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -359,7 +394,7 @@ namespace RealEstate.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("RealEstate.Data.Entities.AgentsEntity", null)
+                    b.HasOne("RealEstate.Data.Entities.AgentEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -368,7 +403,7 @@ namespace RealEstate.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("RealEstate.Data.Entities.AgentsEntity", null)
+                    b.HasOne("RealEstate.Data.Entities.AgentEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -383,7 +418,7 @@ namespace RealEstate.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RealEstate.Data.Entities.AgentsEntity", null)
+                    b.HasOne("RealEstate.Data.Entities.AgentEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -392,11 +427,38 @@ namespace RealEstate.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("RealEstate.Data.Entities.AgentsEntity", null)
+                    b.HasOne("RealEstate.Data.Entities.AgentEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("RealEstate.Data.Entities.AppointmentEntity", b =>
+                {
+                    b.HasOne("RealEstate.Data.Entities.AgentEntity", "Agent")
+                        .WithMany()
+                        .HasForeignKey("AgentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RealEstate.Data.Entities.BuyerEntity", "Buyer")
+                        .WithMany()
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RealEstate.Data.Entities.ListingEntity", "Listing")
+                        .WithMany()
+                        .HasForeignKey("ListingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Agent");
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("Listing");
                 });
 
             modelBuilder.Entity("RealEstate.Data.Entities.ListingEntity", b =>
