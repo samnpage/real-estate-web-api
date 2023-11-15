@@ -23,7 +23,7 @@ namespace RealEstate.Data.Entities
 
         [Required, ForeignKey(nameof(listing))]
         public int ListingId { get; set; }
-        public Listings listing { get; set; }=null!;
+        public ListingEntity listing { get; set; }=null!;
         public DateTime DateScheduled{ get; set; }
 
         [Required]
