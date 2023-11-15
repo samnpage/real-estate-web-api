@@ -7,10 +7,6 @@ namespace RealEstate.Models.ListingsModels.cs
 {
     public class HomeListings
     {
-        public int Id {get; set;}
-
-        public string? HomeStyle {get; set;}
-
         public string? Address1 {get; set;}
 
         public string? Address2 {get; set;}
@@ -21,10 +17,10 @@ namespace RealEstate.Models.ListingsModels.cs
 
         public decimal Price{get; set;}
 
-        public int ZipCode {get; set;}
+        public string ZipCode {get; set;} = string.Empty;
 
         public int SquareFootage {get; set;}
-
-
+        public int HomeStyleId { get; set; } = 0;
+        public string? HomeStyle {get; set;}
     }
 }
