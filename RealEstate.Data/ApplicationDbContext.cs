@@ -13,6 +13,7 @@ public class ApplicationDbContext : IdentityDbContext<AgentsEntity, IdentityRole
     public DbSet<BuyersEntity> Buyers { get; set; }
     
     public DbSet<Listings> Listings { get; set; }
+    public DbSet<AppointmentsEntity> Appointments{ get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
