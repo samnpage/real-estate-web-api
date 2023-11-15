@@ -2,7 +2,6 @@ using RealEstate.Models.Agent;
 using RealEstate.Models.Responses;
 using RealEstate.Services.Agent;
 using Microsoft.AspNetCore.Mvc;
-using RealEstate.Data.Entities;
 
 namespace ElevenNote.WebApi.Controllers;
 
@@ -32,11 +31,11 @@ public class AgentController : ControllerBase
         var registerResult = await _agentService.RegisterAgentAsync(model);
         if (registerResult)
         {
-            TextResponse response = new("Agent was registered.");
+            TextResponse response = new("Agent was successfully registered.");
             return Ok(response);
         }
 
-        return BadRequest(new TextResponse("Agent could not be registered."));
+        return BadRequest(new TextResponse("Agent registration unsuccessful. The agent you are trying to register already exists in the database."));
     }
 
     // GET Methods
@@ -76,7 +75,7 @@ public class AgentController : ControllerBase
         if (response is not null)
             return Ok(response);
 
-        return BadRequest(new TextResponse("Could not update Agent Information"));
+        return BadRequest(response);
     }
 
     // DELETE Method
@@ -89,19 +88,4 @@ public class AgentController : ControllerBase
                 ? Ok(response)
                 : NotFound();
     }
-    
-//     [HttpPost("~/api/Token")]
-//     [ProducesResponseType(typeof(IEnumerable<TokenRequest>), 200)]
-//     public async Task<IActionResult> GetToken([FromBody] TokenRequest request)
-//     {
-//         if (!ModelState.IsValid)
-//             return BadRequest(ModelState);
-        
-//         TokenResponse? response = await _tokenService.GetTokenAsync(request);
-
-//         if (response is null)
-//             return BadRequest(new TextResponse("Invalid username or password."));
-        
-//         return Ok(response);
-//     }
 }
