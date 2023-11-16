@@ -16,31 +16,38 @@ public class BuyerController : ControllerBase
         _buyerService = buyerService;
     }
 
-    // POST
+    // POST Method
     [HttpPost]
-    public async Task<IActionResult> CreateBuyer([FromForm] CreateBuyer request)
+    public async Task<IActionResult> CreateBuyer([FromBody] CreateBuyer request)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var response = await _buyerService.CreateBuyerContactAsync(request);
-        if (response is not null)
+        var registerResult = await _buyerService.CreateBuyerContactAsync(request);
+        if (registerResult)
+        {
+            TextResponse response = new("Buyer was added successfully.");
             return Ok(response);
+        }
 
-        return BadRequest(new TextResponse("Could not create new buyer"));
+        return BadRequest(new TextResponse("Buyer already exists in the database."));
     }
 
-    // GET ALL
+    // GET ALL Method
     [HttpGet]
     public async Task<IActionResult> GetAllBuyers()
     {
         var result = await _buyerService.GetAllBuyersAsync();
-        return Ok(result);
+
+        if (result != null && result.Any())
+            return Ok(result);
+
+        return BadRequest(new TextResponse("There are no buyers in the database."));
     }
 
-    // GET BY ID
+    // GET BY Id Method
     [HttpGet("{buyerId:int}")]
     public async Task<IActionResult> GetBuyerById([FromRoute] int buyerId)
     {
@@ -51,9 +58,9 @@ public class BuyerController : ControllerBase
                 : NotFound();
     }
 
-    // UPDATE
+    // UPDATE Method
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateBuyerById([FromRoute] int id, [FromForm] BuyerEntity request)
+    public async Task<IActionResult> UpdateBuyerById([FromRoute] int id, [FromBody] UpdateBuyer request)
     {
         if (!ModelState.IsValid)
         {
@@ -65,10 +72,10 @@ public class BuyerController : ControllerBase
         if (response is not null)
             return Ok(response);
 
-        return BadRequest(new TextResponse("Could not update buyer"));
+        return BadRequest(response);
     }
 
-    // DELETE
+    // DELETE Method
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteBuyerById([FromRoute] int id)
     {
