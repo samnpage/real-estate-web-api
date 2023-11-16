@@ -1,7 +1,8 @@
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Data.Entities;
 using RealEstate.Models.Appointment;
+using RealEstate.Models.Responses;
 
 namespace RealEstate.Services.Appointment
 {
@@ -16,8 +17,6 @@ namespace RealEstate.Services.Appointment
         {
             _context = context;
         }
-
-
 
         // public UserService(ApplicationDbContext context)
         // {
@@ -39,8 +38,10 @@ namespace RealEstate.Services.Appointment
                 AgentId = model.AgentId,
                 BuyerId = model.BuyerId,
                 ListingId = model.ListingId,
+                FeedBack = model.FeedBack,
                 DateScheduled = DateTime.Now
             };
+            _context.Add (entity);
             
             await _context.SaveChangesAsync();
             return entity;
@@ -54,6 +55,10 @@ namespace RealEstate.Services.Appointment
             // returns a boolean value of true because we are expecting at least a single change.
             // return numberOfChanges == 1;
 
+        }
+          public async Task<IEnumerable<AppointmentEntity>> GetAllAppointmentsAsync()
+        {
+            return await _context.Appointments.ToListAsync();
         }
 
         // GET METHOD. Gets user info by id. Returns null if it does not exist.
@@ -69,25 +74,41 @@ namespace RealEstate.Services.Appointment
                 AgentId = entity.AgentId,
                 BuyerId = entity.BuyerId,
                 ListingId = entity.ListingId,
+                FeedBack = entity.FeedBack,
                 DateCreated = DateTime.Now
+
             };
 
             return detail;
         }
+        //update methode
+        public async Task<TextResponse> UpdateAppointmentByIdAsync(int id, UpdateAppointment updateAppointment)
+        {
+            var existingAppointment = await _context.Appointments.FirstOrDefaultAsync(l => l.Id == id);
 
-        // Helper Methods
-        // Checks whether the user's email is unique
-        // private async Task<bool> CheckAppointmentIdAvailability(string appointmentId)
-        // {
-        //     AppointmentEntity? existingUser = await _userManager.FindByAppointmentIdAsync(appointmentId);
-        //     return existingUser is null;
-        // }
+            if (existingAppointment != null)
+            {  
+                existingAppointment.AgentId = updateAppointment.AgentId;
+                existingAppointment.BuyerId = updateAppointment.BuyerId;
+                existingAppointment.ListingId = updateAppointment.ListingId;
+                existingAppointment.FeedBack = updateAppointment.FeedBack;
 
-        // // Checks whether the user's username is unique
-        // private async Task<bool> CheckUserNameAvailability(string userName)
-        // {
-        //     AppointmentEntity? existingUser = await _userManager.FindByNameAsync(userName);
-        //     return existingUser is null;
-        // }
+                await _context.SaveChangesAsync();
+            }
+            return new TextResponse("update was successful");
+        }
+        //delete methode
+         public async Task<TextResponse> DeleteAppointmentAsync(int id)
+        {
+            var appointmentToDelete = await _context.Appointments.FirstOrDefaultAsync(l => l.Id == id);
+
+            
+            if (appointmentToDelete != null)
+            {
+                _context.Appointments.Remove(appointmentToDelete);
+                await _context.SaveChangesAsync();
+            }
+            return new TextResponse("Appointment successfully deleted");
+        }
     }
 }
