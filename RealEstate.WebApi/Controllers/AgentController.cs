@@ -44,7 +44,11 @@ public class AgentController : ControllerBase
     public async Task<IActionResult> GetAllAgents()
     {
         var result = await _agentService.GetAllAgentsAsync();
-        return Ok(result);
+
+        if (result != null && result.Any())
+            return Ok(result);
+
+        return BadRequest(new TextResponse("There are no agents in the database"));
     }
     
     // GET by Id
