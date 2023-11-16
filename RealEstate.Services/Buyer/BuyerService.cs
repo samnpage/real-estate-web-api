@@ -42,14 +42,28 @@ public class BuyerService : IBuyerService
     // READ ALL Method
     public async Task<List<BuyerEntity>> GetAllBuyersAsync()
     {
-        var buyers = await _dbContext.Buyers.ToListAsync();
-        return buyers;
+        return await _dbContext.Buyers.ToListAsync();
     }
 
     // READ By Id Method
-    public async Task<BuyerEntity?> GetBuyerByIdAsync(int id)
+    public async Task<BuyerDetail?> GetBuyerByIdAsync(int id)
     {
-        return await _dbContext.Buyers.FirstOrDefaultAsync(l => l.Id == id);
+        BuyerEntity? entity = await _dbContext.Buyers.FindAsync(id);
+        if (entity is null)
+            return null;
+
+        BuyerDetail detail = new()
+        {
+            Id = entity.Id,
+            FirstName = entity.FirstName,
+            LastName = entity.LastName,
+            Email = entity.Email,
+            Phone = entity.Phone,
+            PrefSqFt = entity.PrefSqFt,
+            DateCreated = entity.DateCreated
+        };
+
+        return detail;
     }
 
     // UPDATE Method

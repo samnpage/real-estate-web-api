@@ -9,7 +9,7 @@ public interface IBuyerService
     Task<bool> CreateBuyerContactAsync(CreateBuyer model);
 
     // READ
-    Task<BuyerEntity?> GetBuyerByIdAsync(int id);
+    Task<BuyerDetail?> GetBuyerByIdAsync(int id);
     Task<List<BuyerEntity>> GetAllBuyersAsync();
 
     // UPDATE
