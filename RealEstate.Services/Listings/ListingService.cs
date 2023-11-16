@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Data.Entities;
+using RealEstate.Models.ListingsModels;
 
 namespace RealEstate.Services
 {
@@ -61,6 +62,11 @@ namespace RealEstate.Services
                 _dbContext.Listings.Remove(listingToDelete);
                 await _dbContext.SaveChangesAsync();
             }
+        }
+
+        public Task CreateListingAsync(HomeListings listing)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Data.Entities;
-using RealEstate.Models.ListingsModels;
-using RealEstate.Models.ListingsModels.cs;
+using RealEstate.Models.ListingsModels; // Remove the .cs from the namespaceZ
 using RealEstate.Services;
 using System;
 using System.Collections.Generic;
@@ -25,7 +24,19 @@ namespace RealEstate.Controllers
         public async Task<ActionResult<IEnumerable<HomeListings>>> GetAllListings()
         {
             var listings = await _listingService.GetAllListingsAsync();
-            var homeListings = listings.Select(listing => MapToListingsModel(listing));
+            var homeListings = listings.Select(listing => new HomeListings
+            {
+                Address1 = listing.Address1,
+                Address2 = listing.Address2,
+                City = listing.City,
+                State = listing.State,
+                Price = listing.Price,
+                ZipCode = listing.ZipCode,
+                SquareFootage = listing.SquareFootage,
+                HomeStyleId = listing.HomeStyleId,
+                
+            });
+
             return Ok(homeListings);
         }
 
@@ -39,7 +50,18 @@ namespace RealEstate.Controllers
                 return NotFound();
             }
 
-            var homeListing = MapToListingsModel(listing);
+            var homeListing = new HomeListings
+            {
+                Address1 = listing.Address1,
+                Address2 = listing.Address2,
+                City = listing.City,
+                State = listing.State,
+                Price = listing.Price,
+                ZipCode = listing.ZipCode,
+                SquareFootage = listing.SquareFootage,
+                HomeStyleId = listing.HomeStyleId,
+                
+            };
 
             return Ok(homeListing);
         }
@@ -47,7 +69,18 @@ namespace RealEstate.Controllers
         [HttpPost]
         public async Task<ActionResult<HomeListings>> CreateListing([FromBody] HomeListings homeListings)
         {
-            var listing = MapToDataEntity(homeListings);
+            var listing = new HomeListings
+            {
+                Address1 = homeListings.Address1,
+                Address2 = homeListings.Address2,
+                City = homeListings.City,
+                State = homeListings.State,
+                Price = homeListings.Price,
+                ZipCode = homeListings.ZipCode,
+                SquareFootage = homeListings.SquareFootage,
+                HomeStyleId = homeListings.HomeStyleId,
+                
+            };
 
             await _listingService.CreateListingAsync(listing);
 
@@ -57,9 +90,24 @@ namespace RealEstate.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateListing(int id, [FromBody] HomeListings updatedHomeListings)
         {
-            var updatedListing = MapToDataEntity(updatedHomeListings);
+            var existingListing = await _listingService.GetListingByIdAsync(id);
 
-            await _listingService.UpdateListingAsync(id, updatedListing);
+            if (existingListing == null)
+            {
+                return NotFound();
+            }
+
+            existingListing.Address1 = updatedHomeListings.Address1;
+            existingListing.Address2 = updatedHomeListings.Address2;
+            existingListing.City = updatedHomeListings.City;
+            existingListing.State = updatedHomeListings.State;
+            existingListing.Price = updatedHomeListings.Price;
+            existingListing.ZipCode = updatedHomeListings.ZipCode;
+            existingListing.SquareFootage = updatedHomeListings.SquareFootage;
+            existingListing.HomeStyleId = updatedHomeListings.HomeStyleId;
+            
+
+            await _listingService.UpdateListingAsync(id, existingListing);
 
             return NoContent();
         }
@@ -67,39 +115,16 @@ namespace RealEstate.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteListing(int id)
         {
+            var existingListing = await _listingService.GetListingByIdAsync(id);
+
+            if (existingListing == null)
+            {
+                return NotFound();
+            }
+
             await _listingService.DeleteListingAsync(id);
 
             return NoContent();
-        }
-
-        private HomeListings MapToListingsModel(ListingEntity listing)
-        {
-            return new HomeListings
-            {
-                HomeStyle = listing.HomeStyle.Name,
-                Address1 = listing.Address1,
-                Address2 = listing.Address2,
-                City = listing.City,
-                State = listing.State,
-                Price = listing.Price,
-                ZipCode = listing.ZipCode,
-                SquareFootage = listing.SquareFootage
-            };
-        }
-
-        private ListingEntity MapToDataEntity(HomeListings homeListings)
-        {
-            return new ListingEntity
-            {
-                HomeStyleId = homeListings.HomeStyleId,
-                Address1 = homeListings.Address1,
-                Address2 = homeListings.Address2,
-                City = homeListings.City,
-                State = homeListings.State,
-                Price = homeListings.Price,
-                ZipCode = homeListings.ZipCode
-                
-            };
         }
     }
 }

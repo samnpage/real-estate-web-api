@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RealEstate.Models.ListingsModels.cs
+namespace RealEstate.Models.ListingsModels
 {
     public class HomeListings
     {
+        public readonly object Id;
+
         public string? Address1 {get; set;}
 
         public string? Address2 {get; set;}
@@ -21,6 +23,6 @@ namespace RealEstate.Models.ListingsModels.cs
 
         public int SquareFootage {get; set;}
         public int HomeStyleId { get; set; } = 0;
-        public string? HomeStyle {get; set;}
+        public string? HomeStyle {get; set;} 
     }
 }

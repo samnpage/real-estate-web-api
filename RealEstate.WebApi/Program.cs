@@ -8,6 +8,7 @@ using RealEstate.Services.Agents;
 using RealEstate.Services.Appointments;
 using RealEstate.Services.Buyers;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
