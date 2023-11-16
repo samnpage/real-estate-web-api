@@ -13,7 +13,7 @@ public interface IAgentService
     Task<AgentDetail?> GetAgentByIdAsync(int agentId);
 
     // UPDATE
-    Task<AgentEntity?> UpdateAgentByIdAsync(int id, UpdateAgent updatedAgent);
+    Task<TextResponse> UpdateAgentByIdAsync(int id, UpdateAgent updatedAgent);
 
     // DELETE
     Task<TextResponse> DeleteAgentByIdAsync(int id);
