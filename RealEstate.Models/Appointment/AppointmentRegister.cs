@@ -10,10 +10,8 @@ public class AppointmentRegister
 
     public int ListingId { get; set; }
 
-    [Required]
     public string FeedBack { get; set; } = string.Empty;
 
-    public DateTime DateScheduled { get; set; }
 }
 
 
