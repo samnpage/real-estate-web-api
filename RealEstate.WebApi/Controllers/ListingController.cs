@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Data.Entities;
-using RealEstate.Models.ListingsModels;
+using RealEstate.Models.Listing;
 using RealEstate.Services;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace RealEstate.Controllers
 {
@@ -78,3 +76,4 @@ namespace RealEstate.Controllers
         }
     }
 }
+
