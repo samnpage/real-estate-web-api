@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using RealEstate.Data.Entities;
 using RealEstate.Models.Buyer;
 using RealEstate.Models.Responses;
 using RealEstate.Services.Buyer;
@@ -51,10 +50,10 @@ public class BuyerController : ControllerBase
     [HttpGet("{buyerId:int}")]
     public async Task<IActionResult> GetBuyerById([FromRoute] int buyerId)
     {
-        BuyerEntity? entity = await _buyerService.GetBuyerByIdAsync(buyerId);
+        BuyerDetail? detail = await _buyerService.GetBuyerByIdAsync(buyerId);
 
-        return entity is not null
-                ? Ok(entity)
+        return detail is not null
+                ? Ok(detail)
                 : NotFound();
     }
 
