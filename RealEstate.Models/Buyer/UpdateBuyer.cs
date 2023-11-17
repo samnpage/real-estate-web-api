@@ -3,12 +3,13 @@ using System.ComponentModel.DataAnnotations;
 namespace RealEstate.Models.Buyer;
 public class UpdateBuyer
 {
+    [MaxLength(100)]
     public string FirstName { get; set; } = string.Empty;
 
-    [Required, MaxLength(100)]
+    [MaxLength(100)]
     public string LastName { get; set; } = string.Empty;
 
-    [Required, EmailAddress]
+    [EmailAddress]
     public string Email { get; set; } = string.Empty;
 
     [Phone, MaxLength(15)]
