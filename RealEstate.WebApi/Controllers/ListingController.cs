@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Data.Entities;
 using RealEstate.Models.Listing;
+using RealEstate.Models.Responses;
 using RealEstate.Services;
 
 namespace RealEstate.Controllers
@@ -34,30 +35,34 @@ namespace RealEstate.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<HomeListings>> CreateListing([FromBody] HomeListings homeListings)
+        public async Task<IActionResult> CreateListing([FromBody] CreateListing createListing)
         {
-            var listing = new ListingEntity
+
+
+            if (!ModelState.IsValid)
             {
-            };
+                return BadRequest(ModelState);
+            }
 
-            await _listingService.CreateListingAsync(listing);
-
-        
-            return CreatedAtAction(nameof(GetListingById), new { id = listing.Id }, listing);
+            var response = await _listingService.CreateListingAsync(createListing);
+            if (response is not null)
+            {
+                return Ok(response);
+            }
+            return BadRequest(new TextResponse("Listing creation unsuccessful"));
         }
-
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateListing(int id, [FromBody] HomeListings updatedHomeListings)
+        public async Task<IActionResult> UpdateListing([FromRoute] int id, [FromBody] UpdateListing updatedListing)
         {
-            var existingListing = await _listingService.GetListingByIdAsync(id);
+            var response = await _listingService.UpdateListingAsync(id,updatedListing);
 
-            if (existingListing == null)
+            if (response == null)
             {
                 return NotFound();
             }
 
-        
-            return Ok(existingListing);
+
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
@@ -76,4 +81,3 @@ namespace RealEstate.Controllers
         }
     }
 }
-

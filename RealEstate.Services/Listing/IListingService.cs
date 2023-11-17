@@ -1,4 +1,6 @@
 using RealEstate.Data.Entities;
+using RealEstate.Models.Listing;
+using RealEstate.Models.Responses;
 
 namespace RealEstate.Services
 {
@@ -6,8 +8,9 @@ namespace RealEstate.Services
     {
         Task<IEnumerable<ListingEntity>> GetAllListingsAsync();
         Task<ListingEntity> GetListingByIdAsync(int id);
-        Task CreateListingAsync(ListingEntity listing);
-        Task UpdateListingAsync(int id, ListingEntity updatedListing);
+        Task<TextResponse> UpdateListingAsync(int id, UpdateListing updatedListing);
         Task DeleteListingAsync(int id);
+        Task<TextResponse> CreateListingAsync(CreateListing createListing);
+
     }
 }
