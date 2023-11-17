@@ -5,6 +5,7 @@ using RealEstate.Models.Buyer;
 using RealEstate.Models.Responses;
 
 namespace RealEstate.Services.Buyer;
+
 public class BuyerService : IBuyerService
 {
     private readonly ApplicationDbContext _dbContext;

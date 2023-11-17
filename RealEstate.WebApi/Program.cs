@@ -29,8 +29,6 @@ builder.Services.AddDefaultIdentity<AgentEntity>(options =>
     options.Password.RequireLowercase = false;
     options.Password.RequireDigit = false;
     options.Password.RequireNonAlphanumeric = false;
-
-
 })
 
     .AddRoles<IdentityRole<int>>() // Enable Roles
