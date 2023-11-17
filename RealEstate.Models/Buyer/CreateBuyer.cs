@@ -3,16 +3,16 @@ using System.ComponentModel.DataAnnotations;
 namespace RealEstate.Models.Buyer;
 public class CreateBuyer
 {
-    [Required, MaxLength(100)]
+    [Required, MaxLength(50)]
     public string FirstName { get; set; } = string.Empty;
 
-    [Required, MaxLength(100)]
+    [Required, MaxLength(50)]
     public string LastName { get; set; } = string.Empty;
 
     [Required, EmailAddress]
     public string Email { get; set; } = string.Empty;
 
-    [Phone, MaxLength(15)]
+    [Phone, MaxLength(14)]
     public string Phone { get; set; } = string.Empty;
 
     [Range(0, int.MaxValue)]
