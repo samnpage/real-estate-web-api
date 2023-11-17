@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using RealEstate.Data.Entities;
 using RealEstate.Models.Appointment;
 using RealEstate.Models.Responses;
 using RealEstate.Services.Appointment;
@@ -18,7 +16,8 @@ public class AppointmentController : ControllerBase
         _appointmentService = appointmentService;
 
     }
-     [HttpPost]
+
+    [HttpPost]
     public async Task<IActionResult> CreateAppointment([FromForm] AppointmentRegister request)
     {
         if (!ModelState.IsValid)
@@ -54,8 +53,8 @@ public class AppointmentController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> UpdateAppointmentById(int id, [FromBody] UpdateAppointment updateAppointment )
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAppointmentById([FromRoute] int id, [FromBody] UpdateAppointment updateAppointment )
     {
         if (!ModelState.IsValid)
         {
@@ -70,7 +69,7 @@ public class AppointmentController : ControllerBase
         return BadRequest(response);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteAppointment([FromRoute] int id)
     {
         TextResponse response = await _appointmentService.DeleteAppointmentAsync(id);
@@ -80,5 +79,3 @@ public class AppointmentController : ControllerBase
             : NotFound();
     }
 }
-
-
