@@ -25,12 +25,15 @@ public class AgentService : IAgentService
     // CREATE METHOD
     public async Task<bool> RegisterAgentAsync(AgentRegister model)
     {
-        if (await CheckEmailAvailability(model.Email) == false)
+        // Check email availability
+        if (!await CheckEmailAvailability(model.Email))
         {
             Console.WriteLine("Invalid email, already in use");
             return false;
         }
-        if (await CheckUserNameAvailability(model.UserName) == false)
+
+        // Check username availability
+        if (!await CheckUserNameAvailability(model.UserName))
         {
             Console.WriteLine("Invalid username, already in use.");
             return false;
@@ -53,10 +56,27 @@ public class AgentService : IAgentService
     // READ METHODS
 
     // READ All
-    public async Task<List<AgentEntity>> GetAllAgentsAsync()
+    public async Task<List<AgentDetail>> GetAllAgentsAsync()
     {
         var agents = await _context.Users.ToListAsync();
-        return agents;
+        var agentDetails = new List<AgentDetail>();
+
+        foreach (var agent in agents)
+        {
+            var detail = new AgentDetail
+            {
+                Id = agent.Id,
+                FirstName = agent.FirstName,
+                LastName = agent.LastName,
+                Email = agent.Email!,
+                UserName = agent.UserName!,
+                DateCreated = agent.DateCreated
+            };
+
+            agentDetails.Add(detail);
+        }
+
+        return agentDetails;
     }
 
     // READ by Id
