@@ -4,6 +4,7 @@ using RealEstate.Models.Responses;
 using RealEstate.Services.Buyer;
 
 namespace RealEstate.WebApi.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class BuyerController : ControllerBase
