@@ -1,8 +1,8 @@
-#Real Estate Web Api
+Real Estate Web Api
 
-##Functionality
+Functionality
 
-#Description of our project
+Description of our project
 
 [Trello Link](https://www.genome.gov/)
 
