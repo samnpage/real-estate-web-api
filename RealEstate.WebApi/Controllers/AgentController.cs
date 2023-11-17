@@ -4,15 +4,12 @@ using RealEstate.Services.Agent;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElevenNote.WebApi.Controllers;
-
 [Route("api/[controller]")]
 [ApiController]
 public class AgentController : ControllerBase
 {
-    // Fields that access our services
     private readonly IAgentService _agentService;
 
-    // Constructor
     public AgentController(IAgentService agentService)
     {
         _agentService = agentService;
@@ -39,7 +36,7 @@ public class AgentController : ControllerBase
     }
 
     // GET Methods
-    // GET all
+    // GET All
     [HttpGet]
     public async Task<IActionResult> GetAllAgents()
     {
@@ -51,7 +48,7 @@ public class AgentController : ControllerBase
         return BadRequest(new TextResponse("There are no agents in the database"));
     }
     
-    // GET by Id
+    // GET By Id
     [HttpGet("{agentId:int}")]
     public async Task<IActionResult> GetById([FromRoute] int agentId)
     {

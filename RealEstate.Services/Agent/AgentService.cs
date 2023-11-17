@@ -12,7 +12,6 @@ public class AgentService : IAgentService
     private readonly UserManager<AgentEntity> _userManager;
     private readonly SignInManager<AgentEntity> _signInManager;
 
-    // Constructor that applies ApplicationDbContext's value to a readonly field above^.
     public AgentService(ApplicationDbContext context,
                         UserManager<AgentEntity> userManager,
                         SignInManager<AgentEntity> signInManager)
@@ -26,7 +25,6 @@ public class AgentService : IAgentService
     // CREATE METHOD
     public async Task<bool> RegisterAgentAsync(AgentRegister model)
     {
-        //  checks the returned value from both methods. If either return anything but null, we'll know it's invalid data.
         if (await CheckEmailAvailability(model.Email) == false)
         {
             Console.WriteLine("Invalid email, already in use");
@@ -38,7 +36,6 @@ public class AgentService : IAgentService
             return false;
         }
 
-        // Calls our AgentEntity and applys each property value collected to its respective property.
         AgentEntity entity = new()
         {
             FirstName = model.FirstName,
