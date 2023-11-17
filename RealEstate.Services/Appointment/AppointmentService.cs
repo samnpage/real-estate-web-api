@@ -18,21 +18,9 @@ namespace RealEstate.Services.Appointment
             _context = context;
         }
 
-        // public UserService(ApplicationDbContext context)
-        // {
-        //     _context = context;
-        // }
         // CREATE METHOD.
         public async Task<AppointmentEntity> RegisterAppointmentAsync(AppointmentRegister model)
         {
-            //  checks the returned value from both methods. If either return anything but null, we'll know it's invalid data.
-            // if (await CheckDateTimedAvailability(model.AppointmentId) == false)
-            // {
-            //     Console.WriteLine("Invalid Appointment, already in use");
-            //     return false;
-            // }
-
-            // Calls our UserEntity entity and applys each property value collected to its respective property.
             AppointmentEntity entity = new()
             {
                 AgentId = model.AgentId,
@@ -45,18 +33,9 @@ namespace RealEstate.Services.Appointment
             
             await _context.SaveChangesAsync();
             return entity;
-
-            //Checks if username exists in the database or not.      
-            // Adds our new entity object to _context.Users DbSet. This will add the entity to the Users table.
-            // _context.Users.Add(entity);
-            // Returns number of rows changed in the db and stores it into a variable.
-            // int numberOfChanges = await _context.SaveChangesAsync();
-
-            // returns a boolean value of true because we are expecting at least a single change.
-            // return numberOfChanges == 1;
-
         }
-          public async Task<IEnumerable<AppointmentEntity>> GetAllAppointmentsAsync()
+
+        public async Task<IEnumerable<AppointmentEntity>> GetAllAppointmentsAsync()
         {
             return await _context.Appointments.ToListAsync();
         }
@@ -81,7 +60,8 @@ namespace RealEstate.Services.Appointment
 
             return detail;
         }
-        //update methode
+
+        //update method
         public async Task<TextResponse> UpdateAppointmentByIdAsync(int id, UpdateAppointment updateAppointment)
         {
             var existingAppointment = await _context.Appointments.FirstOrDefaultAsync(l => l.Id == id);
@@ -97,8 +77,9 @@ namespace RealEstate.Services.Appointment
             }
             return new TextResponse("update was successful");
         }
-        //delete methode
-         public async Task<TextResponse> DeleteAppointmentAsync(int id)
+
+        //delete method
+        public async Task<TextResponse> DeleteAppointmentAsync(int id)
         {
             var appointmentToDelete = await _context.Appointments.FirstOrDefaultAsync(l => l.Id == id);
 
