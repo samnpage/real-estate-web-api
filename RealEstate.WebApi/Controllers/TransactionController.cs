@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Models.Transaction;
 using RealEstate.Models.Responses;
-using RealEstate.Services.Transaction;
+using RealEstate.Services.Transaction; //! Why not this? 
 using System.Transactions;
-using RealEstate.Services.Buyer;
+using RealEstate.Services.Buyer; //! What? lol
 
 namespace RealEstate.WebApi.Controllers;
 [Route("api/[controller]")]
@@ -17,7 +17,6 @@ public class TransactionController : ControllerBase
         _transactionService = transactionService;
     }
 
-    // POST Method
     [HttpPost]
     public async Task<IActionResult> CreateTranscation([FromBody] CreateTransaction request)
     {
@@ -36,7 +35,6 @@ public class TransactionController : ControllerBase
         return BadRequest(new TextResponse("Transaction already exists in the database."));
     }
 
-    // GET ALL Method
     [HttpGet]
     public async Task<IActionResult> GetAllTransactions()
     {
@@ -48,7 +46,7 @@ public class TransactionController : ControllerBase
         return BadRequest(new TextResponse("There are no transactions in the database."));
     }
 
-    // GET BY Id Method
+
     [HttpGet("{transactionId:int}")]
     public async Task<IActionResult> GetTransactionById([FromRoute] int transactionId)
     {
@@ -59,7 +57,6 @@ public class TransactionController : ControllerBase
                 : NotFound();
     }
 
-    // UPDATE Method
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateTransactionById([FromRoute] int id, [FromBody] CreateTransaction request)
     {
@@ -76,7 +73,7 @@ public class TransactionController : ControllerBase
         return BadRequest(response);
     }
 
-    // DELETE Method
+
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteTransactionById([FromRoute] int id)
     {

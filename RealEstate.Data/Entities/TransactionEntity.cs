@@ -16,10 +16,7 @@ public class TransactionEntity
     [ForeignKey(nameof(Buyer))]
     public int BuyerId { get; set; }
     public virtual BuyerEntity Buyer { get; set; } = null!;
-
-    [ForeignKey(nameof(Listing))]
     public int AskingPrice { get; set; }
-    public virtual ListingEntity Price { get; set; } = null!;
     [Required]
     public int SalePrice { get; set; }
     public DateTime TransactionDate { get; set; }
