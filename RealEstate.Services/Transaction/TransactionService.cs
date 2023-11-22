@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
-using RealEstate.Data.Entities;
 using RealEstate.Models.Transaction;
 using RealEstate.Models.Responses;
-using RealEstate.Services.Transaction;
 
 namespace RealEstate.Services.Transaction;
 public class TransactionService : ITransactionService
@@ -50,7 +48,7 @@ public class TransactionService : ITransactionService
             Id = entity.Id,
             ListingId = entity.ListingId,
             BuyerId = entity.BuyerId,
-            AskingPrice = entity.AskingPrice,
+            SalePrice = entity.SalePrice,
             TransactionDate = entity.TransactionDate
         };
 
@@ -58,7 +56,7 @@ public class TransactionService : ITransactionService
     }
 
     // UPDATE Method
-    public async Task<TextResponse> UpdateTransactionByIdAsync(int id, CreateTransaction updatedTransaction)
+    public async Task<TextResponse> UpdateTransactionByIdAsync(int id, UpdateTransaction updatedTransaction)
     {
         var currentTransaction = await _dbContext.Transactions.FirstOrDefaultAsync(e => e.Id == id);
 

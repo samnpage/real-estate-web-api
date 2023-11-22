@@ -1,9 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace RealEstate.Models.Transaction;
-public class TransactionDetail
+public class UpdateTransaction
 {
-    public int Id { get; set; }
+    [Required]
     public int ListingId { get; set; }
     public int BuyerId { get; set; }
     public int SalePrice { get; set; }
-    public DateTime TransactionDate { get; set; }
 }
