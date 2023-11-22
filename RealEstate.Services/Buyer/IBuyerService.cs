@@ -6,7 +6,7 @@ namespace RealEstate.Services.Buyer;
 public interface IBuyerService
 {
     // CREATE
-    Task<ListBuyer?> CreateBuyerContactAsync(CreateBuyer model);
+    Task<BuyerList?> CreateBuyerContactAsync(BuyerCreate model);
 
     // READ
     Task<BuyerEntity?> GetBuyerByIdAsync(int id);

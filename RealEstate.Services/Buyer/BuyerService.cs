@@ -15,7 +15,7 @@ public class BuyerService : IBuyerService
     }
 
     // CREATE Method that creates new buyer contact
-    public async Task<ListBuyer?> CreateBuyerContactAsync(CreateBuyer model)
+    public async Task<BuyerList?> CreateBuyerContactAsync(BuyerCreate model)
     {
         BuyerEntity entity = new()
         {
@@ -35,7 +35,7 @@ public class BuyerService : IBuyerService
             return null;
         }
 
-        ListBuyer response = new()
+        BuyerList response = new()
         {
             Id = entity.Id,
             FirstName = entity.FirstName,

@@ -18,7 +18,7 @@ public class BuyerController : ControllerBase
 
     // POST
     [HttpPost]
-    public async Task<IActionResult> CreateBuyer([FromForm] CreateBuyer request)
+    public async Task<IActionResult> CreateBuyer([FromForm] BuyerCreate request)
     {
         if (!ModelState.IsValid)
         {
