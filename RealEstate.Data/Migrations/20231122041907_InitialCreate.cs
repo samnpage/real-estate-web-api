@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RealEstate.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCommit : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,8 +17,8 @@ namespace RealEstate.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -61,10 +61,10 @@ namespace RealEstate.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
                     PrefSqFt = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -74,7 +74,7 @@ namespace RealEstate.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HomeStyle",
+                name: "HomeStyles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -83,7 +83,7 @@ namespace RealEstate.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HomeStyle", x => x.Id);
+                    table.PrimaryKey("PK_HomeStyles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -212,9 +212,9 @@ namespace RealEstate.Data.Migrations
                 {
                     table.PrimaryKey("PK_Listings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Listings_HomeStyle_HomeStyleId",
+                        name: "FK_Listings_HomeStyles_HomeStyleId",
                         column: x => x.HomeStyleId,
-                        principalTable: "HomeStyle",
+                        principalTable: "HomeStyles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -248,6 +248,35 @@ namespace RealEstate.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Appointments_Listings_ListingId",
+                        column: x => x.ListingId,
+                        principalTable: "Listings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ListingId = table.Column<int>(type: "int", nullable: false),
+                    BuyerId = table.Column<int>(type: "int", nullable: false),
+                    AskingPrice = table.Column<int>(type: "int", nullable: false),
+                    SalePrice = table.Column<int>(type: "int", nullable: false),
+                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Transactions_Buyers_BuyerId",
+                        column: x => x.BuyerId,
+                        principalTable: "Buyers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Transactions_Listings_ListingId",
                         column: x => x.ListingId,
                         principalTable: "Listings",
                         principalColumn: "Id",
@@ -312,6 +341,16 @@ namespace RealEstate.Data.Migrations
                 name: "IX_Listings_HomeStyleId",
                 table: "Listings",
                 column: "HomeStyleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_BuyerId",
+                table: "Transactions",
+                column: "BuyerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_ListingId",
+                table: "Transactions",
+                column: "ListingId");
         }
 
         /// <inheritdoc />
@@ -336,10 +375,7 @@ namespace RealEstate.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Buyers");
-
-            migrationBuilder.DropTable(
-                name: "Listings");
+                name: "Transactions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -348,7 +384,13 @@ namespace RealEstate.Data.Migrations
                 name: "Agents");
 
             migrationBuilder.DropTable(
-                name: "HomeStyle");
+                name: "Buyers");
+
+            migrationBuilder.DropTable(
+                name: "Listings");
+
+            migrationBuilder.DropTable(
+                name: "HomeStyles");
         }
     }
 }

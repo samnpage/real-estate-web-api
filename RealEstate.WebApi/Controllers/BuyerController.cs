@@ -18,7 +18,7 @@ public class BuyerController : ControllerBase
 
     // POST Method
     [HttpPost]
-    public async Task<IActionResult> CreateBuyer([FromBody] CreateBuyer request)
+    public async Task<IActionResult> CreateBuyer([FromBody] BuyerCreate request)
     {
         if (!ModelState.IsValid)
         {
@@ -60,7 +60,7 @@ public class BuyerController : ControllerBase
 
     // UPDATE Method
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateBuyerById([FromRoute] int id, [FromBody] UpdateBuyer request)
+    public async Task<IActionResult> UpdateBuyerById([FromRoute] int id, [FromBody] BuyerUpdate request)
     {
         if (!ModelState.IsValid)
         {

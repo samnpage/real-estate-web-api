@@ -1,15 +1,15 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace RealEstate.Models.Buyer;
-public class UpdateBuyer
+public class BuyerCreate
 {
-    [MaxLength(50)]
+    [Required, MaxLength(50)]
     public string FirstName { get; set; } = string.Empty;
 
-    [MaxLength(50)]
+    [Required, MaxLength(50)]
     public string LastName { get; set; } = string.Empty;
 
-    [EmailAddress]
+    [Required, EmailAddress]
     public string Email { get; set; } = string.Empty;
 
     [Phone, MaxLength(14)]

@@ -15,6 +15,8 @@ public class ApplicationDbContext : IdentityDbContext<AgentEntity, IdentityRole<
     public DbSet<AppointmentEntity> Appointments{ get; set; }
     
     public DbSet<ListingEntity> Listings { get; set; }
+    public DbSet<TransactionEntity> Transactions { get; set; }
+    public DbSet<HomeStyleEntity> HomeStyles {get; set;}
 
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -24,5 +26,8 @@ public class ApplicationDbContext : IdentityDbContext<AgentEntity, IdentityRole<
         builder.Entity<AgentEntity>().ToTable("Agents");
         builder.Entity<BuyerEntity>().ToTable("Buyers");
         builder.Entity<ListingEntity>().ToTable("Listings");
+        builder.Entity<AppointmentEntity>().ToTable("Appointments");
+        builder.Entity<TransactionEntity>().ToTable("Transactions");
+        builder.Entity<HomeStyleEntity>().ToTable("HomeStyles");
     }
 }

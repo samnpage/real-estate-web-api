@@ -100,7 +100,7 @@ public class AgentService : IAgentService
     }
 
     // UPDATE METHOD
-    public async Task<TextResponse> UpdateAgentByIdAsync(int id, UpdateAgent updatedAgent)
+    public async Task<TextResponse> UpdateAgentByIdAsync(int id, AgentUpdate updatedAgent)
     {
         var currentAgent = await _context.Users.FindAsync(id);
 
@@ -135,7 +135,7 @@ public class AgentService : IAgentService
             if (hasChanges)
             {
                 await _context.SaveChangesAsync();
-                return new TextResponse("Agent updated successfully"); // Assuming you want to return the updated agent on success
+                return new TextResponse("Agent updated successfully"); 
             }
             else
             {

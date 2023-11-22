@@ -4,19 +4,19 @@ using RealEstate.Data.Entities;
 using RealEstate.Models.Appointment;
 using RealEstate.Models.Responses;
 
-namespace RealEstate.Services.Appointment
-{
+namespace RealEstate.Services.Appointment;
+
     public class AppointmentService : IAppointmentService
     {
-        // Fields
         private readonly ApplicationDbContext _context;
-
-        // Constructor that applies ApplicationDbContext's value to a readonly field above^.
         public AppointmentService(ApplicationDbContext context)
 
         {
             _context = context;
         }
+
+    
+      
 
         // CREATE METHOD.
         public async Task<AppointmentEntity> RegisterAppointmentAsync(AppointmentRegister model)
@@ -40,7 +40,7 @@ namespace RealEstate.Services.Appointment
             return await _context.Appointments.ToListAsync();
         }
 
-        // GET METHOD. Gets user info by id. Returns null if it does not exist.
+        // GET METHOD.
         public async Task<AppointmentDetail?> GetAppointmentByIdAsync(int Id)
         {
             AppointmentEntity? entity = await _context.Appointments.FindAsync(Id);
@@ -74,8 +74,10 @@ namespace RealEstate.Services.Appointment
                 existingAppointment.FeedBack = updateAppointment.FeedBack;
 
                 await _context.SaveChangesAsync();
+                return new TextResponse("update was successful");
             }
-            return new TextResponse("update was successful");
+
+            return new TextResponse("Update was unsuccessful");
         }
 
         //delete method
@@ -92,4 +94,3 @@ namespace RealEstate.Services.Appointment
             return new TextResponse("Appointment successfully deleted");
         }
     }
-}

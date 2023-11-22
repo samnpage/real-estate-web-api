@@ -1,5 +1,5 @@
 namespace RealEstate.Models.Buyer;
-public class ListBuyer
+public class BuyerList
 {
     public int Id { get; set; }
     public string FirstName { get; set; } = string.Empty;
