@@ -26,6 +26,7 @@ public class ApplicationDbContext : IdentityDbContext<AgentEntity, IdentityRole<
         builder.Entity<AgentEntity>().ToTable("Agents");
         builder.Entity<BuyerEntity>().ToTable("Buyers");
         builder.Entity<ListingEntity>().ToTable("Listings");
+        builder.Entity<AppointmentEntity>().ToTable("Appointments");
         builder.Entity<TransactionEntity>().ToTable("Transactions");
         builder.Entity<HomeStyleEntity>().ToTable("HomeStyles");
     }

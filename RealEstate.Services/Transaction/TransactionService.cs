@@ -20,6 +20,8 @@ public class TransactionService : ITransactionService
     {
         TransactionEntity entity = new()
         {
+            BuyerId = model.BuyerId,
+            ListingId = model.ListingId,
             SalePrice = model.SalePrice,
             TransactionDate = DateTime.Now
         };

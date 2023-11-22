@@ -74,7 +74,7 @@ namespace RealEstate.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HomeStyle",
+                name: "HomeStyles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -83,7 +83,7 @@ namespace RealEstate.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HomeStyle", x => x.Id);
+                    table.PrimaryKey("PK_HomeStyles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -212,9 +212,9 @@ namespace RealEstate.Data.Migrations
                 {
                     table.PrimaryKey("PK_Listings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Listings_HomeStyle_HomeStyleId",
+                        name: "FK_Listings_HomeStyles_HomeStyleId",
                         column: x => x.HomeStyleId,
-                        principalTable: "HomeStyle",
+                        principalTable: "HomeStyles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -390,7 +390,7 @@ namespace RealEstate.Data.Migrations
                 name: "Listings");
 
             migrationBuilder.DropTable(
-                name: "HomeStyle");
+                name: "HomeStyles");
         }
     }
 }

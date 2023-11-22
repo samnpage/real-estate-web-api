@@ -17,7 +17,7 @@ public class TransactionController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateTranscation([FromBody] CreateTransaction request)
+    public async Task<IActionResult> CreateTransaction([FromBody] CreateTransaction request)
     {
         if (!ModelState.IsValid)
         {
