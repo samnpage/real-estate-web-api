@@ -6,6 +6,7 @@ using RealEstate.Services;
 using RealEstate.Services.Agent;
 using RealEstate.Services.Appointment;
 using RealEstate.Services.Buyer;
+using RealEstate.Services.Transaction;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddScoped<IBuyerService, BuyerService>();
 builder.Services.AddScoped<IAgentService, AgentService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IListingService, ListingService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 builder.Services.AddHttpContextAccessor();
 
