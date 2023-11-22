@@ -4,8 +4,8 @@ using RealEstate.Data.Entities;
 using RealEstate.Models.Appointment;
 using RealEstate.Models.Responses;
 
-namespace RealEstate.Services.Appointment
-{
+namespace RealEstate.Services.Appointment;
+
     public class AppointmentService : IAppointmentService
     {
         private readonly ApplicationDbContext _context;
@@ -14,9 +14,8 @@ namespace RealEstate.Services.Appointment
         {
             _context = context;
         }
-        // CREATE METHOD.
-        public async Task<AppointmentEntity> RegisterAppointmentAsync(AppointmentRegister model)
-        {
+
+    
       
 
         // CREATE METHOD.
@@ -75,8 +74,10 @@ namespace RealEstate.Services.Appointment
                 existingAppointment.FeedBack = updateAppointment.FeedBack;
 
                 await _context.SaveChangesAsync();
+                return new TextResponse("update was successful");
             }
-            return new TextResponse("update was successful");
+
+            return new TextResponse("Update was unsuccessful");
         }
 
         //delete method
@@ -93,4 +94,3 @@ namespace RealEstate.Services.Appointment
             return new TextResponse("Appointment successfully deleted");
         }
     }
-}
