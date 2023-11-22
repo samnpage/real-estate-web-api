@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Models.Transaction;
 using RealEstate.Models.Responses;
-using RealEstate.Services.Transaction; //! Why not this? 
-using System.Transactions;
-using RealEstate.Services.Buyer; //! What? lol
+using RealEstate.Services.Transaction;
+
 
 namespace RealEstate.WebApi.Controllers;
 [Route("api/[controller]")]

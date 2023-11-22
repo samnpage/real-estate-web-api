@@ -12,7 +12,7 @@ using RealEstate.Data;
 namespace RealEstate.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231121232825_InitialCreate")]
+    [Migration("20231121235827_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -403,9 +403,6 @@ namespace RealEstate.Data.Migrations
                     b.Property<int>("ListingId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PriceId")
-                        .HasColumnType("int");
-
                     b.Property<int>("SalePrice")
                         .HasColumnType("int");
 
@@ -417,8 +414,6 @@ namespace RealEstate.Data.Migrations
                     b.HasIndex("BuyerId");
 
                     b.HasIndex("ListingId");
-
-                    b.HasIndex("PriceId");
 
                     b.ToTable("Transactions", (string)null);
                 });
@@ -526,17 +521,9 @@ namespace RealEstate.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RealEstate.Data.Entities.ListingEntity", "Price")
-                        .WithMany()
-                        .HasForeignKey("PriceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Buyer");
 
                     b.Navigation("Listing");
-
-                    b.Navigation("Price");
                 });
 #pragma warning restore 612, 618
         }

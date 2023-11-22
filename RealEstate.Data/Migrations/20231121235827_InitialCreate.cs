@@ -263,7 +263,6 @@ namespace RealEstate.Data.Migrations
                     ListingId = table.Column<int>(type: "int", nullable: false),
                     BuyerId = table.Column<int>(type: "int", nullable: false),
                     AskingPrice = table.Column<int>(type: "int", nullable: false),
-                    PriceId = table.Column<int>(type: "int", nullable: false),
                     SalePrice = table.Column<int>(type: "int", nullable: false),
                     TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -279,12 +278,6 @@ namespace RealEstate.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Transactions_Listings_ListingId",
                         column: x => x.ListingId,
-                        principalTable: "Listings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Transactions_Listings_PriceId",
-                        column: x => x.PriceId,
                         principalTable: "Listings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -358,11 +351,6 @@ namespace RealEstate.Data.Migrations
                 name: "IX_Transactions_ListingId",
                 table: "Transactions",
                 column: "ListingId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_PriceId",
-                table: "Transactions",
-                column: "PriceId");
         }
 
         /// <inheritdoc />
