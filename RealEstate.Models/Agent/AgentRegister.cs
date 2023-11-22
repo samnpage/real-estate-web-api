@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 namespace RealEstate.Models.Agent;
 public class AgentRegister
 {
-    [MaxLength(100)]
+    [Required, MaxLength(50)]
     public string FirstName { get; set; } = string.Empty;
 
-    [MaxLength(100)]
+    [Required, MaxLength(50)]
     public string LastName { get; set; } = string.Empty;
     
     [Required, EmailAddress]

@@ -2,18 +2,14 @@ using RealEstate.Models.Agent;
 using RealEstate.Models.Responses;
 using RealEstate.Services.Agent;
 using Microsoft.AspNetCore.Mvc;
-using RealEstate.Data.Entities;
 
 namespace ElevenNote.WebApi.Controllers;
-
 [Route("api/[controller]")]
 [ApiController]
 public class AgentController : ControllerBase
 {
-    // Fields that access our services
     private readonly IAgentService _agentService;
 
-    // Constructor
     public AgentController(IAgentService agentService)
     {
         _agentService = agentService;
@@ -32,23 +28,27 @@ public class AgentController : ControllerBase
         var registerResult = await _agentService.RegisterAgentAsync(model);
         if (registerResult)
         {
-            TextResponse response = new("Agent was registered.");
+            TextResponse response = new("Agent was successfully registered.");
             return Ok(response);
         }
 
-        return BadRequest(new TextResponse("Agent could not be registered."));
+        return BadRequest(new TextResponse("Agent registration unsuccessful. The agent you are trying to register already exists in the database."));
     }
 
     // GET Methods
-    // GET all
+    // GET All
     [HttpGet]
     public async Task<IActionResult> GetAllAgents()
     {
         var result = await _agentService.GetAllAgentsAsync();
-        return Ok(result);
+
+        if (result != null && result.Any())
+            return Ok(result);
+
+        return BadRequest(new TextResponse("There are no agents in the database"));
     }
     
-    // GET by Id
+    // GET By Id
     [HttpGet("{agentId:int}")]
     public async Task<IActionResult> GetById([FromRoute] int agentId)
     {
@@ -64,7 +64,7 @@ public class AgentController : ControllerBase
 
     // PUT Method
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateBuyerById([FromRoute] int id, [FromBody] UpdateAgent request)
+    public async Task<IActionResult> UpdateBuyerById([FromRoute] int id, [FromBody] AgentUpdate request)
     {
         if (!ModelState.IsValid)
         {
@@ -76,7 +76,7 @@ public class AgentController : ControllerBase
         if (response is not null)
             return Ok(response);
 
-        return BadRequest(new TextResponse("Could not update Agent Information"));
+        return BadRequest(response);
     }
 
     // DELETE Method
@@ -89,19 +89,4 @@ public class AgentController : ControllerBase
                 ? Ok(response)
                 : NotFound();
     }
-    
-//     [HttpPost("~/api/Token")]
-//     [ProducesResponseType(typeof(IEnumerable<TokenRequest>), 200)]
-//     public async Task<IActionResult> GetToken([FromBody] TokenRequest request)
-//     {
-//         if (!ModelState.IsValid)
-//             return BadRequest(ModelState);
-        
-//         TokenResponse? response = await _tokenService.GetTokenAsync(request);
-
-//         if (response is null)
-//             return BadRequest(new TextResponse("Invalid username or password."));
-        
-//         return Ok(response);
-//     }
 }

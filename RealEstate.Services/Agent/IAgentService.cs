@@ -9,11 +9,11 @@ public interface IAgentService
     Task<bool> RegisterAgentAsync(AgentRegister model);
 
     // READ
-    Task<List<AgentEntity>> GetAllAgentsAsync();
+    Task<List<AgentDetail>> GetAllAgentsAsync();
     Task<AgentDetail?> GetAgentByIdAsync(int agentId);
 
     // UPDATE
-    Task<AgentEntity?> UpdateAgentByIdAsync(int id, UpdateAgent updatedAgent);
+    Task<TextResponse> UpdateAgentByIdAsync(int id, AgentUpdate updatedAgent);
 
     // DELETE
     Task<TextResponse> DeleteAgentByIdAsync(int id);

@@ -6,14 +6,14 @@ namespace RealEstate.Services.Buyer;
 public interface IBuyerService
 {
     // CREATE
-    Task<bool> CreateBuyerContactAsync(CreateBuyer model);
+    Task<bool> CreateBuyerContactAsync(BuyerCreate model);
 
     // READ
     Task<BuyerDetail?> GetBuyerByIdAsync(int id);
     Task<List<BuyerEntity>> GetAllBuyersAsync();
 
     // UPDATE
-    Task<TextResponse> UpdateBuyerByIdAsync(int id, UpdateBuyer updatedBuyer);
+    Task<TextResponse> UpdateBuyerByIdAsync(int id, BuyerUpdate updatedBuyer);
     
     // DELETE
     Task<TextResponse> DeleteBuyerByIdAsync(int id);
