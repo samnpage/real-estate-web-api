@@ -57,7 +57,7 @@ public class TransactionController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateTransactionById([FromRoute] int id, [FromBody] CreateTransaction request)
+    public async Task<IActionResult> UpdateTransactionById([FromRoute] int id, [FromBody] UpdateTransaction request)
     {
         if (!ModelState.IsValid)
         {

@@ -1,5 +1,3 @@
-using RealEstate.Data.Entities;
-using RealEstate.Models.Buyer;
 using RealEstate.Models.Responses;
 using RealEstate.Models.Transaction;
 
@@ -15,7 +13,7 @@ public interface ITransactionService
     Task<List<TransactionEntity>> GetAllTransactionsAsync();
 
     // UPDATE
-    Task<TextResponse> UpdateTransactionByIdAsync(int id, CreateTransaction updatedTransaction);
+    Task<TextResponse> UpdateTransactionByIdAsync(int id, UpdateTransaction updatedTransaction);
     
     // DELETE
     Task<TextResponse> DeleteTransactionByIdAsync(int id);
