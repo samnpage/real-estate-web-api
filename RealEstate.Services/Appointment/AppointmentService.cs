@@ -8,31 +8,16 @@ namespace RealEstate.Services.Appointment
 {
     public class AppointmentService : IAppointmentService
     {
-        // Fields
         private readonly ApplicationDbContext _context;
-
-        // Constructor that applies ApplicationDbContext's value to a readonly field above^.
         public AppointmentService(ApplicationDbContext context)
 
         {
             _context = context;
         }
-
-        // public UserService(ApplicationDbContext context)
-        // {
-        //     _context = context;
-        // }
         // CREATE METHOD.
         public async Task<AppointmentEntity> RegisterAppointmentAsync(AppointmentRegister model)
         {
-            //  checks the returned value from both methods. If either return anything but null, we'll know it's invalid data.
-            // if (await CheckDateTimedAvailability(model.AppointmentId) == false)
-            // {
-            //     Console.WriteLine("Invalid Appointment, already in use");
-            //     return false;
-            // }
-
-            // Calls our UserEntity entity and applys each property value collected to its respective property.
+      
             AppointmentEntity entity = new()
             {
                 AgentId = model.AgentId,
@@ -46,22 +31,13 @@ namespace RealEstate.Services.Appointment
             await _context.SaveChangesAsync();
             return entity;
 
-            //Checks if username exists in the database or not.      
-            // Adds our new entity object to _context.Users DbSet. This will add the entity to the Users table.
-            // _context.Users.Add(entity);
-            // Returns number of rows changed in the db and stores it into a variable.
-            // int numberOfChanges = await _context.SaveChangesAsync();
-
-            // returns a boolean value of true because we are expecting at least a single change.
-            // return numberOfChanges == 1;
-
         }
           public async Task<IEnumerable<AppointmentEntity>> GetAllAppointmentsAsync()
         {
             return await _context.Appointments.ToListAsync();
         }
 
-        // GET METHOD. Gets user info by id. Returns null if it does not exist.
+        // GET METHOD.
         public async Task<AppointmentDetail?> GetAppointmentByIdAsync(int Id)
         {
             AppointmentEntity? entity = await _context.Appointments.FindAsync(Id);
