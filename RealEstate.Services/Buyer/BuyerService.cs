@@ -5,6 +5,7 @@ using RealEstate.Models.Buyer;
 using RealEstate.Models.Responses;
 
 namespace RealEstate.Services.Buyer;
+
 public class BuyerService : IBuyerService
 {
     private readonly ApplicationDbContext _dbContext;
@@ -14,9 +15,15 @@ public class BuyerService : IBuyerService
         _dbContext = dbContext;
     }
 
-    // CREATE Method that creates new buyer contact
-    public async Task<ListBuyer?> CreateBuyerContactAsync(CreateBuyer model)
+    // CREATE Method
+    public async Task<bool> CreateBuyerContactAsync(CreateBuyer model)
     {
+        if (await CheckEmailAvailability(model.Email) == false)
+        {
+            Console.WriteLine("Invalid email, already in use");
+            return false;
+        }
+
         BuyerEntity entity = new()
         {
             FirstName = model.FirstName,
@@ -28,14 +35,25 @@ public class BuyerService : IBuyerService
         };
 
         _dbContext.Add(entity);
-        var numberOfChanges = await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
 
-        if (numberOfChanges != 1)
-        {
+        return true;
+    }
+
+    // READ ALL Method
+    public async Task<List<BuyerEntity>> GetAllBuyersAsync()
+    {
+        return await _dbContext.Buyers.ToListAsync();
+    }
+
+    // READ By Id Method
+    public async Task<BuyerDetail?> GetBuyerByIdAsync(int id)
+    {
+        BuyerEntity? entity = await _dbContext.Buyers.FindAsync(id);
+        if (entity is null)
             return null;
-        }
 
-        ListBuyer response = new()
+        BuyerDetail detail = new()
         {
             Id = entity.Id,
             FirstName = entity.FirstName,
@@ -43,57 +61,80 @@ public class BuyerService : IBuyerService
             Email = entity.Email,
             Phone = entity.Phone,
             PrefSqFt = entity.PrefSqFt,
-            DateCreated = DateTime.Now
+            DateCreated = entity.DateCreated
         };
+
+        return detail;
+    }
+
+    // UPDATE Method
+    public async Task<TextResponse> UpdateBuyerByIdAsync(int id, UpdateBuyer updatedBuyer)
+    {
+        var currentBuyer = await _dbContext.Buyers.FirstOrDefaultAsync(e => e.Id == id);
+
+        if (currentBuyer != null)
+        {
+            bool hasChanges = false;
+
+            if (currentBuyer.FirstName != updatedBuyer.FirstName)
+            {
+                currentBuyer.FirstName = updatedBuyer.FirstName;
+                hasChanges = true;
+            }
+
+            if (currentBuyer.LastName != updatedBuyer.LastName)
+            {
+                currentBuyer.LastName = updatedBuyer.LastName;
+                hasChanges = true;
+            }
+
+            if (currentBuyer.Email != updatedBuyer.Email)
+            {
+                currentBuyer.Email = updatedBuyer.Email;
+                hasChanges = true;
+            }
+
+            if (currentBuyer.Phone != updatedBuyer.Phone)
+            {
+                currentBuyer.PrefSqFt = updatedBuyer.PrefSqFt;
+                hasChanges = true;
+            }
+
+            if (hasChanges)
+            {
+                await _dbContext.SaveChangesAsync();
+                return new TextResponse("Buyer updated successfully");
+            }
+            else
+            {
+                return new TextResponse("Update was unsuccessful. No changes were detected to the buyer information.");
+            }
+        }
+
+        return new TextResponse("Update was unsuccessful. Buyer was not found in the database.");
+    }
+
+    // DELETE Method
+    public async Task<TextResponse> DeleteBuyerByIdAsync(int id)
+    {
+        var buyerToDelete = await _dbContext.Buyers.FirstOrDefaultAsync(e => e.Id == id);
+
+        if (buyerToDelete != null)
+        {
+            _dbContext.Buyers.Remove(buyerToDelete);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        TextResponse response = new("Buyer deleted successfully.");
 
         return response;
     }
 
-    // Read Method that allows agent to view all buyers
-    public async Task<List<BuyerEntity>> GetAllBuyersAsync()
+    // HELPER METHODS
+    // Checks whether the user's email is unique
+    private async Task<bool> CheckEmailAvailability(string email)
     {
-        var buyers = await _dbContext.Buyers.ToListAsync();
-        return buyers;
+        BuyerEntity? existingBuyer = await _dbContext.Buyers.FirstOrDefaultAsync(b => b.Email == email);
+        return existingBuyer is null;
     }
-
-    // READ Method that allows agent to view buyer information by Id
-    public async Task<BuyerEntity?> GetBuyerByIdAsync(int id)
-        {
-            return await _dbContext.Buyers.FirstOrDefaultAsync(l => l.Id == id);
-        }
-
-    // UPDATE Method. Updates the buyer information by Id.
-    public async Task<BuyerEntity?> UpdateBuyerByIdAsync(int id, BuyerEntity updatedBuyer)
-        {
-            var existingBuyer = await _dbContext.Buyers.FirstOrDefaultAsync(e => e.Id == id);
-
-            if (existingBuyer != null)
-            {   
-                existingBuyer.FirstName = updatedBuyer.FirstName;
-                existingBuyer.LastName = updatedBuyer.LastName;
-                existingBuyer.Email = updatedBuyer.Email;
-                existingBuyer.Phone = updatedBuyer.Phone;
-                existingBuyer.PrefSqFt = updatedBuyer.PrefSqFt;
-
-                await _dbContext.SaveChangesAsync();
-            }
-
-            return existingBuyer;
-        }
-    // DELETE Method
-
-    public async Task<TextResponse> DeleteBuyerByIdAsync(int id)
-        {
-            var buyerToDelete = await _dbContext.Buyers.FirstOrDefaultAsync(e => e.Id == id);
-
-            if (buyerToDelete != null)
-            {
-                _dbContext.Buyers.Remove(buyerToDelete);
-                await _dbContext.SaveChangesAsync();
-            }
-
-            TextResponse response = new ("Buyer deleted successfully.");
-
-            return response;
-        }
 }

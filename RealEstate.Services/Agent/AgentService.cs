@@ -12,7 +12,6 @@ public class AgentService : IAgentService
     private readonly UserManager<AgentEntity> _userManager;
     private readonly SignInManager<AgentEntity> _signInManager;
 
-    // Constructor that applies ApplicationDbContext's value to a readonly field above^.
     public AgentService(ApplicationDbContext context,
                         UserManager<AgentEntity> userManager,
                         SignInManager<AgentEntity> signInManager)
@@ -23,27 +22,23 @@ public class AgentService : IAgentService
         _signInManager = signInManager;
     }
 
-    // public UserService(ApplicationDbContext context)
-    // {
-    //     _context = context;
-    // }
-
     // CREATE METHOD
     public async Task<bool> RegisterAgentAsync(AgentRegister model)
     {
-        //  checks the returned value from both methods. If either return anything but null, we'll know it's invalid data.
-        if (await CheckEmailAvailability(model.Email) == false)
+        // Check email availability
+        if (!await CheckEmailAvailability(model.Email))
         {
             Console.WriteLine("Invalid email, already in use");
             return false;
         }
-        if (await CheckUserNameAvailability(model.UserName) == false)
+
+        // Check username availability
+        if (!await CheckUserNameAvailability(model.UserName))
         {
             Console.WriteLine("Invalid username, already in use.");
             return false;
         }
 
-        // Calls our AgentEntity and applys each property value collected to its respective property.
         AgentEntity entity = new()
         {
             FirstName = model.FirstName,
@@ -56,25 +51,32 @@ public class AgentService : IAgentService
         IdentityResult registerResult = await _userManager.CreateAsync(entity, model.Password);
 
         return registerResult.Succeeded;
-
-        //Checks if username exists in the database or not.      
-        // Adds our new entity object to _context.Users DbSet. This will add the entity to the Users table.
-        // _context.Users.Add(entity);
-        // Returns number of rows changed in the db and stores it into a variable.
-        // int numberOfChanges = await _context.SaveChangesAsync();
-
-        // returns a boolean value of true because we are expecting at least a single change.
-        // return numberOfChanges == 1;
-
     }
 
     // READ METHODS
 
     // READ All
-    public async Task<List<AgentEntity>> GetAllAgentsAsync()
+    public async Task<List<AgentDetail>> GetAllAgentsAsync()
     {
         var agents = await _context.Users.ToListAsync();
-        return agents;
+        var agentDetails = new List<AgentDetail>();
+
+        foreach (var agent in agents)
+        {
+            var detail = new AgentDetail
+            {
+                Id = agent.Id,
+                FirstName = agent.FirstName,
+                LastName = agent.LastName,
+                Email = agent.Email!,
+                UserName = agent.UserName!,
+                DateCreated = agent.DateCreated
+            };
+
+            agentDetails.Add(detail);
+        }
+
+        return agentDetails;
     }
 
     // READ by Id
@@ -98,38 +100,67 @@ public class AgentService : IAgentService
     }
 
     // UPDATE METHOD
-    public async Task<AgentEntity?> UpdateAgentByIdAsync(int id, UpdateAgent updatedAgent)
+    public async Task<TextResponse> UpdateAgentByIdAsync(int id, UpdateAgent updatedAgent)
     {
         var currentAgent = await _context.Users.FindAsync(id);
 
         if (currentAgent != null)
         {
-            currentAgent.FirstName = updatedAgent.FirstName;
-            currentAgent.LastName = updatedAgent.LastName;
-            currentAgent.Email = updatedAgent.Email;
-            currentAgent.UserName = updatedAgent.UserName;
+            bool hasChanges = false;
 
-            await _context.SaveChangesAsync();       
-        }
-
-        return currentAgent;
-    }
-    
-    // DELETE METHOD
-    public async Task<TextResponse> DeleteAgentByIdAsync(int id)
-        {
-            var agentToDelete = await _context.Users.FirstOrDefaultAsync(e => e.Id == id);
-
-            if (agentToDelete != null)
+            if (currentAgent.FirstName != updatedAgent.FirstName)
             {
-                _context.Users.Remove(agentToDelete);
-                await _context.SaveChangesAsync();
+                currentAgent.FirstName = updatedAgent.FirstName;
+                hasChanges = true;
             }
 
-            TextResponse response = new ("Agent successfully deleted");
+            if (currentAgent.LastName != updatedAgent.LastName)
+            {
+                currentAgent.LastName = updatedAgent.LastName;
+                hasChanges = true;
+            }
 
-            return response;
+            if (currentAgent.Email != updatedAgent.Email)
+            {
+                currentAgent.Email = updatedAgent.Email;
+                hasChanges = true;
+            }
+
+            if (currentAgent.UserName != updatedAgent.UserName)
+            {
+                currentAgent.UserName = updatedAgent.UserName;
+                hasChanges = true;
+            }
+
+            if (hasChanges)
+            {
+                await _context.SaveChangesAsync();
+                return new TextResponse("Agent updated successfully"); // Assuming you want to return the updated agent on success
+            }
+            else
+            {
+                return new TextResponse("Update Unsuccesful. No changes detected.");
+            }
         }
+
+        return new TextResponse("Update Unsuccessful. Agent not found.");
+    }
+
+    // DELETE METHOD
+    public async Task<TextResponse> DeleteAgentByIdAsync(int id)
+    {
+        var agentToDelete = await _context.Users.FirstOrDefaultAsync(e => e.Id == id);
+
+        if (agentToDelete != null)
+        {
+            _context.Users.Remove(agentToDelete);
+            await _context.SaveChangesAsync();
+        }
+
+        TextResponse response = new("Agent successfully deleted");
+
+        return response;
+    }
 
     // HELPER METHODS
     // Checks whether the user's email is unique

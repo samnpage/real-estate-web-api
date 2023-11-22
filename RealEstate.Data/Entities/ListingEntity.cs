@@ -37,7 +37,7 @@ namespace RealEstate.Data.Entities
         public string? FeedBack {get; set;}
 
         [ForeignKey(nameof(HomeStyle))]
-        public int HomeStyleId{get; set;}
-        public virtual HomeStyle HomeStyle { get; set; } = null!;
+        public int HomeStyleId { get; set; }
+        public virtual HomeStyleEntity HomeStyle{get; set;} = null!;
     }
 }

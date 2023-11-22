@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Data.Entities;
+using RealEstate.Models.Listing;
+using RealEstate.Models.Responses;
 
 namespace RealEstate.Services
 {
@@ -23,13 +25,28 @@ namespace RealEstate.Services
             return await _dbContext.Listings.FirstOrDefaultAsync(l => l.Id == id);
         }
 
-        public async Task CreateListingAsync(ListingEntity listing)
+        public async Task<TextResponse> CreateListingAsync(CreateListing createListing)
         {
-            _dbContext.Listings.Add(listing);
+
+            ListingEntity entity = new()
+            {
+                Address1 = createListing.Address1,
+                Address2 = createListing.Address2,
+                City = createListing.City,
+                State = createListing.State,
+                ZipCode = createListing.ZipCode,
+                SquareFootage = createListing.SquareFootage,
+                Price = createListing.Price,
+                HomeStyleId = createListing.HomeStyleId,
+
+            };
+
+            _dbContext.Listings.Add(entity);
             await _dbContext.SaveChangesAsync();
+            return new TextResponse("Listing Created");
         }
 
-        public async Task UpdateListingAsync(int id, ListingEntity updatedListing)
+        public async Task<TextResponse> UpdateListingAsync(int id, UpdateListing updatedListing)
         {
             var existingListing = await _dbContext.Listings.FirstOrDefaultAsync(l => l.Id == id);
 
@@ -42,11 +59,11 @@ namespace RealEstate.Services
                 existingListing.ZipCode = updatedListing.ZipCode;
                 existingListing.SquareFootage = updatedListing.SquareFootage;
                 existingListing.Price = updatedListing.Price;
-                existingListing.FeedBack = updatedListing.FeedBack;
-                existingListing.HomeStyle = updatedListing.HomeStyle;
 
                 await _dbContext.SaveChangesAsync();
             }
+
+            return new TextResponse("Update Successful");
         }
 
         public async Task DeleteListingAsync(int id)

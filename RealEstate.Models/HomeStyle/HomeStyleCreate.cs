@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-public class HomeStyle
+namespace RealEstate.Models.HomeStyle;
+public class CreateHomeStyle
 {
-    [Key]
-    public int Id { get; set; }
     [Required]
     public string Name { get; set; } = null!;
 }

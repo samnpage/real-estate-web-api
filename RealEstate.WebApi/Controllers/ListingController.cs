@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Data.Entities;
 using RealEstate.Models.Listing;
+using RealEstate.Models.Responses;
 using RealEstate.Services;
 
 namespace RealEstate.Controllers
@@ -13,89 +14,70 @@ namespace RealEstate.Controllers
 
         public ListingController(IListingService listingService)
         {
-            _listingService = listingService ?? throw new ArgumentNullException(nameof(listingService));
+            _listingService = listingService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HomeListings>>> GetAllListings()
+        public async Task<ActionResult<IEnumerable<ListingEntity>>> GetAllListings()
         {
             var listings = await _listingService.GetAllListingsAsync();
-            var homeListings = listings.Select(listing => MapToListingsModel(listing));
-            return Ok(homeListings);
+            return Ok(listings);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<HomeListings>> GetListingById(int id)
+        public async Task<ActionResult> GetListingById(int id)
         {
-            var listing = await _listingService.GetListingByIdAsync(id);
+            ListingEntity entity = await _listingService.GetListingByIdAsync(id);
 
-            if (listing == null)
+            return entity is not null
+                ? Ok(entity)
+                : NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateListing([FromBody] CreateListing createListing)
+        {
+
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var response = await _listingService.CreateListingAsync(createListing);
+            if (response is not null)
+            {
+                return Ok(response);
+            }
+            return BadRequest(new TextResponse("Listing creation unsuccessful"));
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateListing([FromRoute] int id, [FromBody] UpdateListing updatedListing)
+        {
+            var response = await _listingService.UpdateListingAsync(id,updatedListing);
+
+            if (response == null)
             {
                 return NotFound();
             }
 
-            var homeListing = MapToListingsModel(listing);
 
-            return Ok(homeListing);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<HomeListings>> CreateListing([FromBody] HomeListings homeListings)
-        {
-            var listing = MapToDataEntity(homeListings);
-
-            await _listingService.CreateListingAsync(listing);
-
-            return CreatedAtAction(nameof(GetListingById), new { id = listing.Id }, homeListings);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateListing(int id, [FromBody] HomeListings updatedHomeListings)
-        {
-            var updatedListing = MapToDataEntity(updatedHomeListings);
-
-            await _listingService.UpdateListingAsync(id, updatedListing);
-
-            return NoContent();
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteListing(int id)
         {
+            var existingListing = await _listingService.GetListingByIdAsync(id);
+
+            if (existingListing == null)
+            {
+                return NotFound();
+            }
+
             await _listingService.DeleteListingAsync(id);
 
             return NoContent();
         }
-
-        private HomeListings MapToListingsModel(ListingEntity listing)
-        {
-            return new HomeListings
-            {
-                HomeStyle = listing.HomeStyle.Name,
-                Address1 = listing.Address1,
-                Address2 = listing.Address2,
-                City = listing.City,
-                State = listing.State,
-                Price = listing.Price,
-                ZipCode = listing.ZipCode,
-                SquareFootage = listing.SquareFootage
-            };
-        }
-
-        private ListingEntity MapToDataEntity(HomeListings homeListings)
-        {
-            return new ListingEntity
-            {
-                HomeStyleId = homeListings.HomeStyleId,
-                Address1 = homeListings.Address1,
-                Address2 = homeListings.Address2,
-                City = homeListings.City,
-                State = homeListings.State,
-                Price = homeListings.Price,
-                ZipCode = homeListings.ZipCode
-                
-            };
-        }
     }
 }
-

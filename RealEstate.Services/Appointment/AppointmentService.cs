@@ -18,6 +18,10 @@ namespace RealEstate.Services.Appointment
         public async Task<AppointmentEntity> RegisterAppointmentAsync(AppointmentRegister model)
         {
       
+
+        // CREATE METHOD.
+        public async Task<AppointmentEntity> RegisterAppointmentAsync(AppointmentRegister model)
+        {
             AppointmentEntity entity = new()
             {
                 AgentId = model.AgentId,
@@ -30,9 +34,9 @@ namespace RealEstate.Services.Appointment
             
             await _context.SaveChangesAsync();
             return entity;
-
         }
-          public async Task<IEnumerable<AppointmentEntity>> GetAllAppointmentsAsync()
+
+        public async Task<IEnumerable<AppointmentEntity>> GetAllAppointmentsAsync()
         {
             return await _context.Appointments.ToListAsync();
         }
@@ -57,7 +61,8 @@ namespace RealEstate.Services.Appointment
 
             return detail;
         }
-        //update methode
+
+        //update method
         public async Task<TextResponse> UpdateAppointmentByIdAsync(int id, UpdateAppointment updateAppointment)
         {
             var existingAppointment = await _context.Appointments.FirstOrDefaultAsync(l => l.Id == id);
@@ -73,8 +78,9 @@ namespace RealEstate.Services.Appointment
             }
             return new TextResponse("update was successful");
         }
-        //delete methode
-         public async Task<TextResponse> DeleteAppointmentAsync(int id)
+
+        //delete method
+        public async Task<TextResponse> DeleteAppointmentAsync(int id)
         {
             var appointmentToDelete = await _context.Appointments.FirstOrDefaultAsync(l => l.Id == id);
 
