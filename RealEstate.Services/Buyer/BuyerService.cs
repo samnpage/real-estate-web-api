@@ -16,7 +16,7 @@ public class BuyerService : IBuyerService
     }
 
     // CREATE Method
-    public async Task<bool> CreateBuyerContactAsync(CreateBuyer model)
+    public async Task<bool> CreateBuyerContactAsync(BuyerCreate model)
     {
         if (await CheckEmailAvailability(model.Email) == false)
         {
@@ -68,7 +68,7 @@ public class BuyerService : IBuyerService
     }
 
     // UPDATE Method
-    public async Task<TextResponse> UpdateBuyerByIdAsync(int id, UpdateBuyer updatedBuyer)
+    public async Task<TextResponse> UpdateBuyerByIdAsync(int id, BuyerUpdate updatedBuyer)
     {
         var currentBuyer = await _dbContext.Buyers.FirstOrDefaultAsync(e => e.Id == id);
 

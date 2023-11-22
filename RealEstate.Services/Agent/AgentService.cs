@@ -100,7 +100,7 @@ public class AgentService : IAgentService
     }
 
     // UPDATE METHOD
-    public async Task<TextResponse> UpdateAgentByIdAsync(int id, UpdateAgent updatedAgent)
+    public async Task<TextResponse> UpdateAgentByIdAsync(int id, AgentUpdate updatedAgent)
     {
         var currentAgent = await _context.Users.FindAsync(id);
 

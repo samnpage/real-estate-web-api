@@ -64,7 +64,7 @@ public class AgentController : ControllerBase
 
     // PUT Method
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateBuyerById([FromRoute] int id, [FromBody] UpdateAgent request)
+    public async Task<IActionResult> UpdateBuyerById([FromRoute] int id, [FromBody] AgentUpdate request)
     {
         if (!ModelState.IsValid)
         {

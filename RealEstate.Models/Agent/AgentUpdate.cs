@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace RealEstate.Models.Agent;
-public class UpdateAgent
+public class AgentUpdate
 {
     [MaxLength(50)]
     public string FirstName { get; set; } = string.Empty;
