@@ -8,15 +8,16 @@ namespace RealEstate.Services.Appointment
 {
     public class AppointmentService : IAppointmentService
     {
-        // Fields
         private readonly ApplicationDbContext _context;
-
-        // Constructor that applies ApplicationDbContext's value to a readonly field above^.
         public AppointmentService(ApplicationDbContext context)
 
         {
             _context = context;
         }
+        // CREATE METHOD.
+        public async Task<AppointmentEntity> RegisterAppointmentAsync(AppointmentRegister model)
+        {
+      
 
         // CREATE METHOD.
         public async Task<AppointmentEntity> RegisterAppointmentAsync(AppointmentRegister model)
@@ -40,7 +41,7 @@ namespace RealEstate.Services.Appointment
             return await _context.Appointments.ToListAsync();
         }
 
-        // GET METHOD. Gets user info by id. Returns null if it does not exist.
+        // GET METHOD.
         public async Task<AppointmentDetail?> GetAppointmentByIdAsync(int Id)
         {
             AppointmentEntity? entity = await _context.Appointments.FindAsync(Id);
