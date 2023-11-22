@@ -46,7 +46,7 @@ public class TransactionController : ControllerBase
     }
 
 
-    [HttpGet("{transactionId:int}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetTransactionById([FromRoute] int transactionId)
     {
         TransactionDetail? detail = await _transactionService.GetTransactionByIdAsync(transactionId);

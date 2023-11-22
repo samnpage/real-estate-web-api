@@ -47,7 +47,7 @@ public class HomeStyleController : ControllerBase
     }
 
 
-    [HttpGet("{HomeStyleId:int}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetHomeStyleById([FromRoute] int HomeStyleId)
     {
         HomeStyleDetail? detail = await _HomeStyleService.GetHomeStyleByIdAsync(HomeStyleId);
