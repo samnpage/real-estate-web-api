@@ -3,14 +3,14 @@ using RealEstate.Data;
 using RealEstate.Data.Entities;
 using RealEstate.Models.Transaction;
 using RealEstate.Models.Responses;
-using RealEstate.Services.Buyer;
+using RealEstate.Services.Transaction;
 
 namespace RealEstate.Services.Transaction;
-public class BuyerService : ITransactionService
+public class TransactionService : ITransactionService
 {
     private readonly ApplicationDbContext _dbContext;
 
-    public BuyerService(ApplicationDbContext dbContext)
+    public TransactionService(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
     }

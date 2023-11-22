@@ -3,7 +3,7 @@ using RealEstate.Models.Buyer;
 using RealEstate.Models.Responses;
 using RealEstate.Models.Transaction;
 
-namespace RealEstate.Services.Buyer;
+namespace RealEstate.Services.Transaction;
 public interface ITransactionService
 {
     // CREATE

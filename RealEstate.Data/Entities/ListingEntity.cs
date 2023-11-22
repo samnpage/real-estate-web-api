@@ -38,6 +38,6 @@ namespace RealEstate.Data.Entities
 
         [ForeignKey(nameof(HomeStyle))]
         public int HomeStyleId { get; set; }
-        public virtual HomeStyle HomeStyle{get; set;} = null!;
+        public virtual HomeStyleEntity HomeStyle{get; set;} = null!;
     }
 }

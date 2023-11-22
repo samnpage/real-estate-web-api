@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RealEstate.Data.Entities
 {
-    public class HomeStyle
+    public class HomeStyleEntity
     {
         [Key]
         public int Id { get; set; }
